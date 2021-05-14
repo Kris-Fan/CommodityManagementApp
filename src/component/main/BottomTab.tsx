@@ -2,16 +2,13 @@ import React from 'react';
 import {Platform} from 'react-native';
 // import {createAppContainer} from 'react-navigation';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from '@ant-design/react-native/lib/icon';
 
 import {HomePage, CartPage, MePage} from '..';
 import ContactsPageTab from '../contacts/TopTab';
 import {createAppContainer} from 'react-navigation';
-import {Colors} from '../../constant';
+import {Colors, Size} from '../../constant';
 // import {Home, Grid} from '../common/Icon';
-
-const iconSize = 26;
-const iconSizeLight = 22;
 
 const BottomTabNavigator = createBottomTabNavigator(
   {
@@ -26,7 +23,7 @@ const BottomTabNavigator = createBottomTabNavigator(
         /*导航呈现的图标*/
         tabBarIcon: ({tintColor}) => (
           /*第三方图标库（图标名称，图标大小，图标样式*/
-          <Icon name={'home'} size={iconSize} style={{color: tintColor}} />
+          <Icon name={'home'} size={Size.iconSize} style={{color: tintColor}} />
         ),
       },
     },
@@ -36,7 +33,7 @@ const BottomTabNavigator = createBottomTabNavigator(
         tabBarLabel: '联系人',
         tabBarIcon: ({tintColor}) => (
           /*第三方图标库（图标名称，图标大小，图标样式*/
-          <Icon name={'team'} size={iconSize} style={{color: tintColor}} />
+          <Icon name={'team'} size={Size.iconSize} style={{color: tintColor}} />
         ),
       },
     },
@@ -46,7 +43,11 @@ const BottomTabNavigator = createBottomTabNavigator(
         tabBarLabel: '订单',
         tabBarIcon: ({tintColor}) => (
           /*第三方图标库（图标名称，图标大小，图标样式*/
-          <Icon name={'tagso'} size={iconSize} style={{color: tintColor}} />
+          <Icon
+            name={'shopping-cart'}
+            size={Size.iconSize}
+            style={{color: tintColor}}
+          />
         ),
       },
     },
@@ -57,8 +58,8 @@ const BottomTabNavigator = createBottomTabNavigator(
         tabBarIcon: ({tintColor}) => (
           /*第三方图标库（图标名称，图标大小，图标样式*/
           <Icon
-            name={'smileo'}
-            size={iconSizeLight}
+            name={'smile'}
+            size={Size.iconSizeLight}
             style={{color: tintColor}}
           />
         ),

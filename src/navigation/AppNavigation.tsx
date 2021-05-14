@@ -35,16 +35,19 @@ const MainNavigator = createSwitchNavigator(
 */
 
 const AppRouter = createStackNavigator({
+  // APP主页面
   Home: {
     screen: createAppContainer(BottomTab),
     navigationOptions: {
       headerShown: false, //可以通过将header设为null来禁用StackNavigator的Navigation
     },
   },
+  // 联系人详情页
   ContactDetail: {
     screen: ContactDetail,
     navigationOptions: {
       headerShown: false,
+      gestureEnabled: true,
     },
   },
 });

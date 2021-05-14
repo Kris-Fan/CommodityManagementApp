@@ -1,6 +1,7 @@
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 
 import {Colors} from '../../constant';
+import styles from '../../constant/Style';
 import Group1 from './Group1';
 import Group2 from './Group2';
 
@@ -26,25 +27,32 @@ const TopTabNavigator = createMaterialTopTabNavigator(
   {
     tabBarOptions: {
       tabStyle: {
-        minWidth: 20,
+        minWidth: 4,
       }, //设置单个tab的样式
       upperCaseLabel: false, //是否使标签大写，默认为true
       scrollEnabled: true, //是否支持 选项卡滚动，默认false
       activeTintColor: Colors.primary, //label和icon的前景色 活跃状态下（选中）
-      inactiveTintColor: Colors.dark, //label和icon的前景色 活跃状态下（未选中）
+      inactiveTintColor: Colors.gray, //label和icon的前景色 活跃状态下（未选中）
       style: {
-        backgroundColor: Colors.lighter, //TabBar 的背景颜色
+        backgroundColor: Colors.transparent, //TabBar 的背景颜色
+        marginLeft: -20,
+        paddingLeft: 0,
       },
       indicatorStyle: {
-        height: 2,
+        height: 6,
+        maxWidth: 24,
         backgroundColor: Colors.primary,
+        borderRadius: 3,
+        marginLeft: 50,
       }, //设置 indicator(tab下面的那条线)的样式
-
       labelStyle: {
-        fontSize: 13,
-        marginTop: 6,
-        marginBottom: 6,
+        ...styles.tabBar,
+        marginTop: 0,
+        marginBottom: 1,
+        marginLeft: 0,
+        paddingLeft: 0,
       }, //设置TabBar标签的样式
+      allowFontScaling: true,
     },
   },
 );

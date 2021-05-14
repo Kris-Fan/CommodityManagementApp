@@ -10,9 +10,14 @@
 
 import React from 'react';
 import AppNavigation from './src/navigation/AppNavigation';
+import Provider from '@ant-design/react-native/lib/provider';
 
 const App = () => {
-  return <AppNavigation />;
+  return (
+    <Provider>
+      <AppNavigation />
+    </Provider>
+  );
 };
 
 export default App;

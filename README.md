@@ -1,3 +1,9 @@
+# 启动：
+## link
+npx react-native link 
+## android
+npx react-native run-android
+
 # Navigator
 Navigator可以让你在应用的不同场景（页面）间进行切换。
 Navigator通过路由对象来分辨不同的场景。
