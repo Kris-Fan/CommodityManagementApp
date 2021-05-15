@@ -8,9 +8,7 @@ import {
   ViewStyle,
   TouchableOpacity,
 } from 'react-native';
-import Colors from '../../constant/Colors';
-import styles from '../../constant/Style';
-import Size from '../../constant/Size';
+import {Colors, Style as styles, Size} from '../../constant';
 import Circle from './Circle';
 import Flex from '@ant-design/react-native/lib/flex';
 

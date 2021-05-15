@@ -1,56 +1,86 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, useColorScheme, Text} from 'react-native';
+import {
+  SafeAreaView,
+  StatusBar,
+  useColorScheme,
+  Text,
+  View,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import {Colors, Style as styles} from '../../constant';
-import List from '@ant-design/react-native/lib/list';
-import Icon from '@ant-design/react-native/lib/icon';
+import {LabelLine} from '../common/LabelLine';
+import {BlankLine, Square} from '../common/Square';
 import MyHeader from './MyHeader';
-
-// const links = [
-//   {
-//     id: 1,
-//     name: 'first me',
-//   },
-// ];
-
-const Item = List.Item;
 
 const MePage: React.FC<{}> = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundColor = isDarkMode ? Colors.darker : Colors.lighter;
   const backgroundStyle = {
     backgroundColor,
-    ...styles.textArea,
   };
-  const itemStyle = {
-    backgroundColor,
-  };
-  const textItemStyle = {
-    marginLeft: 2,
+  const viewStyle: StyleProp<ViewStyle> = {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   };
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={isDarkMode ? Colors.darker : Colors.white}
+      />
       <MyHeader />
-      <List renderHeader={'带缩略图'}>
-        <Item
-          style={itemStyle}
-          thumb={<Icon name={'star'} />}
-          arrow="horizontal">
-          <Text style={textItemStyle}>thumb</Text>
-        </Item>
-        <Item
-          style={itemStyle}
-          thumb={<Icon name={'star'} />}
-          arrow="horizontal">
-          <Text style={textItemStyle}>thumb</Text>
-        </Item>
-        <Item
-          style={itemStyle}
-          thumb={<Icon name={'star'} />}
-          arrow="horizontal">
-          <Text style={textItemStyle}>thumb</Text>
-        </Item>
-      </List>
+      <BlankLine />
+      <View style={viewStyle}>
+        <Square
+          name="进行中订单"
+          icon={{name: 'send', needBg: true}}
+          onPress={() => {}}
+        />
+        <Square
+          name="全部订单"
+          icon={{name: 'container', needBg: true}}
+          onPress={() => {}}
+        />
+        <Square
+          name="系统消息"
+          icon={{name: 'message', needBg: true}}
+          onPress={() => {}}
+        />
+      </View>
+      <BlankLine />
+      <LabelLine
+        icon={{name: 'scan', color: Colors.primary}}
+        content="扫一扫"
+        rightIcon
+        onPress={() => {}}
+      />
+      <LabelLine
+        icon={{name: 'sync', color: Colors.primaryActive}}
+        content="数据同步"
+        rightIcon
+        onPress={() => {}}
+      />
+      <BlankLine />
+      <LabelLine
+        icon={{name: 'tool', color: Colors.primaryLight}}
+        content="工具"
+        rightIcon
+        onPress={() => {}}
+      />
+      <LabelLine
+        icon={{name: 'question-circle', color: Colors.sand}}
+        content="帮助与反馈"
+        rightIcon
+        onPress={() => {}}
+      />
+      <BlankLine />
+      <LabelLine
+        icon={{name: 'exclamation-circle', color: Colors.primaryLight}}
+        content="关于"
+        rightIcon
+        onPress={() => {}}
+      />
     </SafeAreaView>
   );
 };

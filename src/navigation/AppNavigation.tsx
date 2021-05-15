@@ -2,6 +2,7 @@ import {createSwitchNavigator, createAppContainer} from 'react-navigation';
 import BottomTab from '../component/main/BottomTab';
 import {createStackNavigator} from 'react-navigation-stack';
 import ContactDetail from '../component/contacts/Detail';
+import {MyWebView} from '../component/page/WebView';
 // import {HomePage, MePage, LoginPage} from '../component';
 
 // APP的启动页面必须使用createSwitchNavigator，防止按返回按钮回到启动页
@@ -48,6 +49,15 @@ const AppRouter = createStackNavigator({
     navigationOptions: {
       headerShown: false,
       gestureEnabled: true,
+    },
+  },
+  // 通用webView
+  MyWebView: {
+    screen: MyWebView,
+    navigationOptions: {
+      headerShown: false,
+      gestureEnabled: true,
+      animationTypeForReplace: 'pop',
     },
   },
 });

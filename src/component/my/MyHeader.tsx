@@ -7,18 +7,14 @@ import Flex from '@ant-design/react-native/lib/flex';
 const MyHeader: React.FC<{}> = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const viewStyle: StyleProp<ViewStyle> = {
-    ...styles.textArea,
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    ...styles.modalViewStyle,
+    backgroundColor: isDarkMode ? Colors.darker : Colors.white,
   };
   return (
     <View style={viewStyle}>
       <Flex>
-        <Flex.Item>
-          <Circle name="G" size={60} />
-        </Flex.Item>
-        <Flex.Item>
-          <Text>lalaalla</Text>
-        </Flex.Item>
+        <Circle name="Z" size={60} />
+        <Text>早上好，VIP</Text>
       </Flex>
     </View>
   );

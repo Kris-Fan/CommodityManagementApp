@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   TouchableOpacity,
   View,
@@ -6,6 +6,7 @@ import {
   useColorScheme,
   StyleProp,
   ViewStyle,
+  Dimensions,
 } from 'react-native';
 import Icon from './Icon';
 import {Colors, Size} from '../../constant';
@@ -15,6 +16,7 @@ import {
   NavigationRoute,
   NavigationParams,
 } from 'react-navigation';
+import {SearchBar, ISearchBar} from './LabelLine';
 
 interface INavHeader {
   title?: string;
@@ -25,10 +27,12 @@ interface INavHeader {
   >;
 }
 
-interface ISearchHeader {
+interface ISearchHeader extends ISearchBar {
   headerLeft?: React.ReactNode;
   headerRight?: React.ReactNode;
 }
+
+const {width} = Dimensions.get('window');
 
 const NavHeader: React.FC<INavHeader> = ({
   title,
@@ -42,45 +46,61 @@ const NavHeader: React.FC<INavHeader> = ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 8,
+    position: color === Colors.transparent ? 'absolute' : 'relative',
+    zIndex: 9999,
+    width,
+    alignItems: 'center',
   };
   const titleStyle = {
     fontSize: Size.normal,
   };
+  const iconStyle = {
+    fontSize: Size.iconSize,
+    color: isDarkMode ? Colors.white : Colors.darker,
+  };
   return (
     <View style={headStyle}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon name="arrow-left" style={{fontSize: Size.iconSize}} />
+        <Icon name="arrow-left" style={iconStyle} />
       </TouchableOpacity>
       <Flex>
         <Text style={titleStyle}>{title}</Text>
       </Flex>
-      <TouchableOpacity>{children}</TouchableOpacity>
+      <View>{children}</View>
     </View>
   );
 };
 
-const SearchHeader: React.FC<ISearchHeader> = ({
-  headerLeft,
-  headerRight,
-}) => {
+const SearchHeader: React.FC<ISearchHeader> = ({headerLeft, headerRight}) => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [showRight, setShowRight] = useState(true);
   const headStyle: StyleProp<ViewStyle> = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.white,
     flexDirection: 'row',
     justifyContent: 'space-between',
     flexWrap: 'nowrap',
     padding: 8,
-    alignItems: 'center'
+    alignItems: 'center',
   };
-  const leftStyle: StyleProp<ViewStyle>  = {
-    flex: 3,
-  }
-  const rightStyle: StyleProp<ViewStyle>  = {
+  const leftStyle: StyleProp<ViewStyle> = {
     flex: 1,
-  }
+    display: headerLeft ? 'flex' : 'none',
+  };
+  const searchStyle: StyleProp<ViewStyle> = {
+    flex: 3,
+  };
+  const rightStyle: StyleProp<ViewStyle> = {
+    flex: 1,
+    display: showRight && headerRight ? 'flex' : 'none',
+  };
+  const onFocus = () => setShowRight(false);
+  const onBlur = () => setShowRight(true);
   return (
     <View style={headStyle}>
       <View style={leftStyle}>{headerLeft}</View>
+      <View style={searchStyle}>
+        <SearchBar onFocus={onFocus} onBlur={onBlur} />
+      </View>
       <View style={rightStyle}>{headerRight}</View>
     </View>
   );

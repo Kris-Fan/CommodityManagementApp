@@ -1,7 +1,6 @@
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 
-import {Colors} from '../../constant';
-import styles from '../../constant/Style';
+import {Colors, Style as styles} from '../../constant';
 import Group1 from './Group1';
 import Group2 from './Group2';
 

@@ -1,12 +1,18 @@
 import {StyleSheet} from 'react-native';
 import {Size, Colors} from './';
 
-const styles = StyleSheet.create({
+export const Style = StyleSheet.create({
   textArea: {
-    paddingLeft: 24,
+    paddingHorizontal: 24,
     paddingBottom: 8,
-    paddingRight: 24,
     paddingTop: 4,
+  },
+  fullScreen: {
+    height: '100%',
+    width: '100%',
+  },
+  transBackground: {
+    backgroundColor: Colors.transparent,
   },
   sectionContainer: {
     marginTop: 32,
@@ -61,6 +67,15 @@ const styles = StyleSheet.create({
   modalContentLight: {
     fontSize: Size.small,
   },
+  commonBorderRadius: {
+    /**
+     * 8
+     */
+    borderRadius: 8,
+  },
+  modalViewStyle: {
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+  },
 });
-
-export default styles;

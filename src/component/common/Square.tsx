@@ -11,7 +11,7 @@ import {
 import Icon from '../common/Icon';
 import {FillGlyphMapType} from '@ant-design/icons-react-native/lib/index';
 import {OutlineGlyphMapType} from '@ant-design/icons-react-native/lib/index';
-import {Colors, Size} from '../../constant';
+import {Colors, Size, Style as styles} from '../../constant';
 
 interface ISquare {
   name: string;
@@ -19,7 +19,12 @@ interface ISquare {
   icon?: {
     name?: OutlineGlyphMapType;
     fillName?: FillGlyphMapType;
+    // 图标颜色
     color?: string;
+    // 是否需要图标背景及其颜色
+    needBg?: boolean | null | undefined;
+    bgColor?: string;
+    size?: number;
   };
   onPress?: (_?: any) => void;
 }
@@ -40,9 +45,20 @@ const Square: React.FC<ISquare> = ({name, descName, icon, onPress}) => {
   };
   const iconStyle: StyleProp<TextStyle> = {
     color: icon?.color ? icon.color : Colors.primary,
-    fontSize: Size.header1,
+    fontSize: icon?.size || Size.header1,
     textAlign: 'center',
   };
+  const iconBgStyle = icon?.needBg
+    ? {
+        backgroundColor: isDarkMode
+          ? Colors.dark
+          : icon?.bgColor || Colors.white,
+        ...styles.commonBorderRadius,
+        paddingVertical: 8,
+        marginHorizontal: 8,
+        marginBottom: 2,
+      }
+    : {};
   const nameText: StyleProp<TextStyle> = {
     color: isDarkMode ? Colors.white : Colors.dark,
     fontSize: Size.small,
@@ -65,7 +81,9 @@ const Square: React.FC<ISquare> = ({name, descName, icon, onPress}) => {
   const renderIcon = () => {
     if (needIcon) {
       return (
-        <Icon name={icon?.name} fillName={icon?.fillName} style={iconStyle} />
+        <View style={iconBgStyle}>
+          <Icon name={icon?.name} fillName={icon?.fillName} style={iconStyle} />
+        </View>
       );
     }
   };

@@ -33,9 +33,8 @@ const Circle: React.FC<{name: string; size?: number}> = ({name, size}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const viewStyle: StyleProp<ViewStyle> = {
     ...circleSize(size),
-    backgroundColor: isDarkMode
-      ? Colors.darker
-      : bgColors[name.charCodeAt(0) % bgColors.length] || Colors.gray, // 转化ascii码取余
+    backgroundColor:
+      bgColors[name.charCodeAt(0) % bgColors.length] || Colors.gray, // 转化ascii码取余
     borderColor: isDarkMode ? Colors.gray : Colors.lighter,
     borderWidth: isDarkMode ? 0.2 : 0,
     borderStyle: 'solid',

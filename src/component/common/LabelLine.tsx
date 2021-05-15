@@ -1,13 +1,27 @@
 import React, {useState} from 'react';
-import {useColorScheme, View, Text, TextInput, StyleProp, ViewStyle} from 'react-native';
-import {Colors, Size} from '../../constant';
+import {
+  useColorScheme,
+  View,
+  Text,
+  TextInput,
+  StyleProp,
+  ViewStyle,
+  TouchableOpacity,
+  Clipboard,
+} from 'react-native';
+import {Colors, Size, Style as styles} from '../../constant';
 import Flex from '@ant-design/react-native/lib/flex';
 import Icon from '../common/Icon';
-import styles from '../../constant/Style';
 import {FillGlyphMapType} from '@ant-design/icons-react-native/lib/index';
 import {OutlineGlyphMapType} from '@ant-design/icons-react-native/lib/index';
-import AntInputItem from '@ant-design/react-native/lib/input-item';
-import AntList from '@ant-design/react-native/lib/list'
+import Toast from '@ant-design/react-native/lib/toast';
+import Modal from '@ant-design/react-native/lib/modal';
+
+export interface ISearchBar {
+  onChange?: (_?: any) => void;
+  onBlur?: (_?: any) => void;
+  onFocus?: (_?: any) => void;
+}
 
 /**
  * 展示行，带标签/icon
@@ -21,28 +35,45 @@ const LabelLine: React.FC<{
     color?: string;
     size?: number;
   };
-}> = ({title, content, icon}) => {
+  rightIcon?: boolean;
+  onPress?: (_?: any) => void;
+  onLongPress?: (_?: any) => void;
+}> = ({title, content, icon, rightIcon, onPress, onLongPress}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const [needIcon] = useState(icon);
   const [needTitle] = useState(title);
   const viewStyle = {
-    padding: 5,
-    ...styles.btmLine,
+    paddingTop: 8,
+    backgroundColor: isDarkMode ? Colors.dark : Colors.white,
+    paddingHorizontal: rightIcon ? 24 : 0,
   };
   const titleStyle = {
     fontSize: Size.normal,
     color: Colors.gray,
   };
+  const textViewStyle: StyleProp<ViewStyle> = {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    ...styles.btmLine,
+    alignItems: 'center',
+  };
   const contentStyle = {
     fontSize: Size.normal,
     marginLeft: needIcon || needTitle ? Size.normal : 0,
-    marginBottom: 4,
+    color: isDarkMode ? Colors.lighter : Colors.dark,
   };
   const iconStyle = {
     fontSize: icon?.size || Size.iconSize,
     color: isDarkMode ? Colors.gray : icon?.color || Colors.gray,
     marginRight: 4,
   };
+  const rightIconStyle = {
+    fontSize: Size.iconSizeLight,
+    color: Colors.light,
+    paddingVertical: 8,
+  };
+  // 渲染图标
   const renderIcon = () => {
     if (needIcon) {
       return (
@@ -54,11 +85,13 @@ const LabelLine: React.FC<{
       );
     }
   };
+  // 渲染标题
   const renderTitle = () => {
     if (needTitle) {
       return <Text style={titleStyle}>{needTitle}</Text>;
     }
   };
+  // 渲染左侧内容（图标+标题名字）
   const renderLeftFlex = () => {
     if (needTitle || needIcon) {
       return (
@@ -69,20 +102,62 @@ const LabelLine: React.FC<{
       );
     }
   };
+  const renderRightView = () => {
+    if (rightIcon) {
+      return <Icon name="right" style={rightIconStyle} />;
+    }
+  };
+  const iOnLongPress = (iContent: string) => {
+    if (onLongPress) {
+      return onLongPress();
+    }
+    return Modal.operation([
+      {
+        text: '复制信息',
+        onPress: () => {
+          if (iContent) {
+            Clipboard.setString(iContent);
+            Clipboard.getString()
+              .then(() => {
+                Toast.success(
+                  `已复制：${
+                    iContent.length > 6
+                      ? iContent.slice(0, 6) + '...'
+                      : iContent
+                  }`,
+                  2,
+                );
+              })
+              .catch(() => {
+                Toast.fail('ERROR-复制失败');
+              });
+          } else {
+            Toast.info('没有相关信息，请先更新数据');
+          }
+        },
+      },
+    ]);
+  };
   return (
-    <View style={viewStyle}>
+    <TouchableOpacity
+      style={viewStyle}
+      onPress={onPress}
+      onLongPress={() => iOnLongPress(content)}>
       <Flex justify="start">
         {renderLeftFlex()}
-        <Text style={contentStyle}>{content}</Text>
+        <View style={textViewStyle}>
+          <Text style={contentStyle}>{content}</Text>
+          {renderRightView()}
+        </View>
       </Flex>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 /**
  * 自定义搜索栏
  */
-const SearchBar: React.FC = () => {
+const SearchBar: React.FC<ISearchBar> = ({onBlur, onFocus, onChange}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const wrapStyle: StyleProp<ViewStyle> = {
     backgroundColor: isDarkMode ? Colors.dark : Colors.lighter,
@@ -96,16 +171,23 @@ const SearchBar: React.FC = () => {
     fontSize: Size.iconSize,
     color: isDarkMode ? Colors.gray : Colors.primary,
     paddingLeft: 5,
-  }
+  };
   const inputStyle = {
     minWidth: 250,
     fontSize: Size.small,
     marginLeft: 5,
-  }
+  };
   return (
     <View style={wrapStyle}>
-      <Icon name="search" style={searchIconStyle}/>
-      <TextInput style={inputStyle} placeholder="搜索..." clearButtonMode="while-editing"></TextInput>
+      <Icon name="search" style={searchIconStyle} />
+      <TextInput
+        style={inputStyle}
+        placeholder="搜索..."
+        clearButtonMode="while-editing"
+        onBlur={onBlur}
+        onFocus={onFocus}
+        onChange={onChange}
+      />
     </View>
   );
 };

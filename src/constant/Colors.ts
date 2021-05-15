@@ -8,6 +8,7 @@ export default {
   lightBg: '#f1f2f6',
   lighter: '#F3F3F3',
   light: '#DAE1E7',
+  grisaillf: '#57606f',
   gray: '#8c8c8c',
   dark: '#444',
   darker: '#222',

@@ -3,9 +3,7 @@ import {Text, View, StyleProp, TextStyle} from 'react-native';
 import Modal from '@ant-design/react-native/lib/modal';
 import Icon from '@ant-design/react-native/lib/icon';
 import {Button} from './Button';
-import Colors from '../../constant/Colors';
-import styles from '../../constant/Style';
-import Size from '../../constant/Size';
+import {Colors, Style as styles, Size} from '../../constant';
 
 const titleStyle: StyleProp<TextStyle> = {
   fontSize: Size.normal,
@@ -54,7 +52,8 @@ const ModalPop: React.FC<{visible: boolean}> = ({visible}) => {
         popup
         visible={iVisible}
         animationType="slide-up"
-        onClose={onClose}>
+        onClose={onClose}
+        style={styles.transBackground}>
         <View style={{paddingVertical: 20, paddingHorizontal: 20}}>
           <Text style={{textAlign: 'center'}}>Content...</Text>
           <Text style={{textAlign: 'center'}}>Content...</Text>

@@ -4,5 +4,12 @@ ReactNative + Typescript
 # Get Start
 ## link
 npx react-native link 
+react-native link react-native-webview
 ## android
 npx react-native run-android
+
+## ios
+```shell
+cd ios
+pod install
+```
