@@ -55,8 +55,9 @@ const LabelLine: React.FC<{
     flex: 3,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    ...styles.btmLine,
     alignItems: 'center',
+    ...styles.btmLine,
+    borderBottomColor: isDarkMode ? Colors.darker : Colors.light,
   };
   const contentStyle = {
     fontSize: Size.normal,
@@ -65,7 +66,7 @@ const LabelLine: React.FC<{
   };
   const iconStyle = {
     fontSize: icon?.size || Size.iconSize,
-    color: isDarkMode ? Colors.gray : icon?.color || Colors.gray,
+    color: icon?.color || Colors.gray,
     marginRight: 4,
   };
   const rightIconStyle = {

@@ -4,20 +4,26 @@ import {
   ViewStyle,
   useColorScheme,
   Dimensions,
-  View,
   Text,
+  TextStyle,
+  Animated,
+  Easing,
 } from 'react-native';
 import {Colors, Size} from '../../constant';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from '../common/Icon';
 import {FillGlyphMapType} from '@ant-design/icons-react-native/lib/index';
 import {OutlineGlyphMapType} from '@ant-design/icons-react-native/lib/index';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {AnimatedValue} from 'react-navigation';
 
 const {height} = Dimensions.get('window');
 
 export enum LoadingEnum {
   // 正在加载中
-  LOADING = 'loading',
+  LOADING = 'loading-3-quarters',
+  // 超时
+  TIMEOUT = 'global',
   // 没有数据
   EMPTY = 'inbox',
   // 没有找到相关信息
@@ -31,7 +37,8 @@ export enum LoadingEnum {
 }
 
 enum TipsEnum {
-  loading = '正在加载中',
+  'loading-3-quarters' = '正在加载中',
+  global = '超时',
   inbox = '没有数据',
   'file-search' = '没有找到相关信息',
   meh = '未知错误',
@@ -60,7 +67,7 @@ export const Loading: React.FC<ILoading> = ({type, icon, text}) => {
   const color = {
     color: isDarkMode ? Colors.gray : Colors.darker,
   };
-  const iconStyle = {
+  const iconStyle: StyleProp<TextStyle> = {
     color: Colors.primary,
     fontSize: Size.iconBig,
   };
@@ -71,21 +78,50 @@ export const Loading: React.FC<ILoading> = ({type, icon, text}) => {
     justifyContent: 'center',
     alignItems: 'center',
   };
-  const viewStyle: StyleProp<ViewStyle> = {
+  const viewStyle: StyleProp<AnimatedValue> = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   };
+  // Loading 动画相关
+  let animatedStyle = {};
+  if (type === LoadingEnum.LOADING) {
+    const spinValue = new Animated.Value(0);
+    const spin = spinValue.interpolate({
+      inputRange: [0, 1], //输入值
+      outputRange: ['0deg', '360deg'], //输出值
+    });
+    iSpin(spinValue);
+    animatedStyle = {
+      transform: [
+        {
+          rotate: spin,
+        },
+      ],
+    };
+  }
   return (
     <SafeAreaView style={containerStyle}>
-      <View style={viewStyle}>
-        <Icon
-          name={icon?.name || type || LoadingEnum.EMPTY}
-          fillName={icon?.fillName}
-          style={iconStyle}
-        />
+      <TouchableOpacity style={viewStyle}>
+        <Animated.View style={animatedStyle}>
+          <Icon
+            name={icon?.name || type || LoadingEnum.EMPTY}
+            fillName={icon?.fillName}
+            style={iconStyle}
+          />
+        </Animated.View>
         <Text style={color}>{text || TipsEnum[type || 'inbox']}</Text>
-      </View>
+      </TouchableOpacity>
     </SafeAreaView>
   );
+};
+
+const iSpin = (iSpinValue: Animated.Value) => {
+  iSpinValue.setValue(0);
+  Animated.timing(iSpinValue, {
+    toValue: 1, // 最终值 为1，这里表示最大旋转 360度
+    duration: 1000,
+    easing: Easing.linear,
+    useNativeDriver: true,
+  }).start(() => iSpin(iSpinValue));
 };

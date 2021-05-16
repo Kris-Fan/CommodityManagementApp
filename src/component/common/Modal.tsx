@@ -43,7 +43,7 @@ const ModalAlert = (name: string) => {
   );
 };
 
-const ModalPop: React.FC<{visible: boolean}> = ({visible}) => {
+const ModalPop: React.FC<{visible: boolean}> = ({visible, children}) => {
   const [iVisible, setVisiable] = useState(visible);
   const onClose = () => setVisiable(false);
   return (
@@ -54,9 +54,8 @@ const ModalPop: React.FC<{visible: boolean}> = ({visible}) => {
         animationType="slide-up"
         onClose={onClose}
         style={styles.transBackground}>
-        <View style={{paddingVertical: 20, paddingHorizontal: 20}}>
-          <Text style={{textAlign: 'center'}}>Content...</Text>
-          <Text style={{textAlign: 'center'}}>Content...</Text>
+        <View style={styles.modalViewStyle}>
+          {children}
           <Button name="primary" onPress={onClose} />
         </View>
       </Modal>

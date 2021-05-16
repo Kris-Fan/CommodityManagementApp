@@ -8,7 +8,7 @@ const MyHeader: React.FC<{}> = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const viewStyle: StyleProp<ViewStyle> = {
     ...styles.modalViewStyle,
-    backgroundColor: isDarkMode ? Colors.darker : Colors.white,
+    backgroundColor: isDarkMode ? Colors.dark : Colors.white,
   };
   return (
     <View style={viewStyle}>

@@ -3,12 +3,11 @@ import {
   SafeAreaView,
   StatusBar,
   useColorScheme,
-  Text,
   View,
   StyleProp,
   ViewStyle,
 } from 'react-native';
-import {Colors, Style as styles} from '../../constant';
+import {Colors} from '../../constant';
 import {LabelLine} from '../common/LabelLine';
 import {BlankLine, Square} from '../common/Square';
 import MyHeader from './MyHeader';

@@ -6,11 +6,11 @@ import {
   useColorScheme,
   StyleProp,
   ViewStyle,
-  Dimensions,
 } from 'react-native';
 import Icon from './Icon';
 import {Colors, Size} from '../../constant';
 import Flex from '@ant-design/react-native/lib/flex';
+import Progress from '@ant-design/react-native/lib/progress';
 import {
   NavigationScreenProp,
   NavigationRoute,
@@ -25,6 +25,7 @@ interface INavHeader {
     NavigationRoute<NavigationParams>,
     NavigationParams
   >;
+  percent?: number;
 }
 
 interface ISearchHeader extends ISearchBar {
@@ -32,13 +33,12 @@ interface ISearchHeader extends ISearchBar {
   headerRight?: React.ReactNode;
 }
 
-const {width} = Dimensions.get('window');
-
 const NavHeader: React.FC<INavHeader> = ({
   title,
   color,
   children,
   navigation,
+  percent,
 }) => {
   const isDarkMode = useColorScheme() === 'dark';
   const headStyle: StyleProp<ViewStyle> = {
@@ -47,8 +47,7 @@ const NavHeader: React.FC<INavHeader> = ({
     justifyContent: 'space-between',
     padding: 8,
     position: color === Colors.transparent ? 'absolute' : 'relative',
-    zIndex: 9999,
-    width,
+    width: '100%',
     alignItems: 'center',
   };
   const titleStyle = {
@@ -58,15 +57,28 @@ const NavHeader: React.FC<INavHeader> = ({
     fontSize: Size.iconSize,
     color: isDarkMode ? Colors.white : Colors.darker,
   };
+  const progressStyle: StyleProp<ViewStyle> = {
+    position: 'relative',
+    zIndex: 999,
+    display: !percent || percent > 99 ? 'none' : 'flex',
+  };
   return (
-    <View style={headStyle}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon name="arrow-left" style={iconStyle} />
-      </TouchableOpacity>
-      <Flex>
-        <Text style={titleStyle}>{title}</Text>
-      </Flex>
-      <View>{children}</View>
+    <View>
+      <View style={headStyle}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="arrow-left" style={iconStyle} />
+        </TouchableOpacity>
+        <Flex>
+          <Text style={titleStyle}>{title}</Text>
+        </Flex>
+        <View>{children}</View>
+      </View>
+      <Progress
+        style={progressStyle}
+        position="fixed"
+        unfilled={false}
+        percent={percent}
+      />
     </View>
   );
 };

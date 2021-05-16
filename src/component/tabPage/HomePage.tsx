@@ -92,7 +92,9 @@ const HomePage: React.FC<NavigationInjectedProps> = ({navigation}) => {
             name="客户分析"
             icon={{fillName: 'contacts', color: Colors.primaryLight}}
             onPress={() =>
-              navigation.navigate('MyWebView', {url: StaticsCustomerUrl})
+              navigation.navigate('MyWebView', {
+                url: StaticsCustomerUrl + '/404',
+              })
             }
           />
           <Square

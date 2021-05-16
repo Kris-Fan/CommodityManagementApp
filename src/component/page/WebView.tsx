@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   StyleProp,
   ViewStyle,
@@ -8,7 +8,7 @@ import {
   View,
   Text,
 } from 'react-native';
-import {WebView, WebViewProps} from 'react-native-webview';
+import {WebView} from 'react-native-webview';
 import {NavHeader} from '../common/Header';
 import {Colors, BaseUrl, Size, Style as styles} from '../../constant';
 import {NavigationInjectedProps} from 'react-navigation';
@@ -43,13 +43,18 @@ const MyWebView: React.FC<NavigationInjectedProps> = ({navigation}) => {
     ...backgroundStyle,
     ...styles.modalViewStyle,
   };
+  const viewStyle: StyleProp<ViewStyle> = {
+    flexDirection: 'row',
+  };
   const [visible, setVisible] = useState(false);
   const onPressShowModal = () => setVisible(true);
   const onClose = () => setVisible(false);
+  const [percent, setPercent] = useState(1);
+  const webViewRef = useRef<WebView>(null);
 
   return (
     <SafeAreaView style={containerStyle}>
-      <NavHeader navigation={navigation}>
+      <NavHeader navigation={navigation} percent={percent}>
         <TouchableOpacity onPress={onPressShowModal}>
           <Icon name="ellipsis" style={moreIconStyle} />
           <Text style={color}>更多</Text>
@@ -64,9 +69,19 @@ const MyWebView: React.FC<NavigationInjectedProps> = ({navigation}) => {
         originWhitelist={['*']}
         javaScriptEnabled={true}
         style={backgroundStyle}
-        renderError={() => <Loading type={LoadingEnum.ERROR} />}
+        renderError={(errorDomain, errorCode, errorDesc) => (
+          <Loading
+            type={LoadingEnum.ERROR}
+            text={`加载失败 CODE:${errorCode}\nDESC:${errorDesc}`}
+          />
+        )}
         startInLoadingState
         renderLoading={() => <Loading type={LoadingEnum.LOADING} />}
+        //设置进度 progress值为0～1
+        onLoadProgress={({nativeEvent}) =>
+          setPercent(nativeEvent.progress * 100)
+        }
+        ref={webViewRef}
       />
       <Modal
         popup
@@ -77,11 +92,24 @@ const MyWebView: React.FC<NavigationInjectedProps> = ({navigation}) => {
         maskClosable
         style={styles.transBackground}>
         <View style={modalViewStyle}>
-          <Square
-            name="刷新"
-            icon={{name: 'reload', needBg: true}}
-            onPress={() => {}}
-          />
+          <View style={viewStyle}>
+            <Square
+              name="刷新"
+              icon={{name: 'reload', needBg: true}}
+              onPress={() => {
+                webViewRef.current?.reload();
+                onClose();
+              }}
+            />
+            <Square
+              name="关闭本页"
+              icon={{name: 'close', color: Colors.watermelon, needBg: true}}
+              onPress={() => {
+                onClose();
+                navigation.goBack();
+              }}
+            />
+          </View>
           <BlankLine />
           <GhostButton name="取消" onPress={onClose} />
         </View>
