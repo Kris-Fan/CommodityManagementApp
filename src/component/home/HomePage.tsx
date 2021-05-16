@@ -5,7 +5,6 @@ import {
   StatusBar,
   TouchableOpacity,
   useColorScheme,
-  Text,
   View,
   StyleProp,
   ViewStyle,
@@ -23,11 +22,12 @@ import {
 } from '../../constant';
 import {Square, RetangleGroup, BlankLine} from '../common/Square';
 import {SearchHeader} from '../common/Header';
-import Popover from '@ant-design/react-native/lib/popover';
+// import Popover from '@ant-design/react-native/lib/popover';
 import Icon from '../common/Icon';
 import Modal from '@ant-design/react-native/lib/modal';
 import {Button} from '../common/Button';
 import {NavigationInjectedProps} from 'react-navigation';
+import {MoreDetail} from './MoreDetail';
 /**
  * 首页
  */
@@ -44,11 +44,10 @@ const HomePage: React.FC<NavigationInjectedProps> = ({navigation}) => {
         backgroundColor={isDarkMode ? Colors.darker : Colors.lighter}
       />
       {/* 顶部栏 */}
-      <SearchHeader headerRight={<MorePopover />} />
+      <SearchHeader headerRight={<MorePopover navigation={navigation} />} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <BlankLine />
         <RetangleGroup bgColor={Colors.primary}>
           <Square name="搜索" icon={{name: 'search', color: Colors.white}} />
           <Square
@@ -137,7 +136,10 @@ const HomePage: React.FC<NavigationInjectedProps> = ({navigation}) => {
 /**
  * 首页-更多功能浮层
  */
-const MorePopover: React.FC<{color?: string}> = ({color}) => {
+const MorePopover: React.FC<NavigationInjectedProps & {color?: string}> = ({
+  color,
+  navigation,
+}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const viewStyle: StyleProp<ViewStyle> = {
     backgroundColor: isDarkMode ? Colors.darker : color || Colors.white,
@@ -147,12 +149,10 @@ const MorePopover: React.FC<{color?: string}> = ({color}) => {
   const iconStyle = {
     fontSize: Size.iconSize,
     color: isDarkMode ? Colors.gray : Colors.dark,
-    marginRight: 5,
+    marginHorizontal: 5,
   };
   const scanStyle = {
-    marginLeft: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
+    paddingHorizontal: 10,
   };
   const modalViewStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lightBg,
@@ -166,15 +166,6 @@ const MorePopover: React.FC<{color?: string}> = ({color}) => {
       <TouchableOpacity onPress={onPressShowModal} style={scanStyle}>
         <Icon name="scan" style={iconStyle} />
       </TouchableOpacity>
-      <Popover
-        overlay={
-          <Popover.Item value={'test'}>
-            <Text>自定义组件 x</Text>
-          </Popover.Item>
-        }
-        placement="bottom">
-        <Icon name="plus-circle" style={iconStyle} />
-      </Popover>
       {/*更多浮层 */}
       <Modal
         popup
@@ -185,9 +176,8 @@ const MorePopover: React.FC<{color?: string}> = ({color}) => {
         maskClosable
         style={styles.transBackground}>
         <View style={modalViewStyle}>
-          <Text>Content...</Text>
-          <Text>Content...</Text>
-          <Button name="primary" onPress={onClose} />
+          <MoreDetail navigation={navigation} onClose={onClose} />
+          <Button name="关闭" onPress={onClose} />
         </View>
       </Modal>
     </View>

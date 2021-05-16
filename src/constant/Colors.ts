@@ -4,6 +4,7 @@ export default {
   primary: '#1e90ff',
   primaryActive: '#3742fa',
   white: '#FFF',
+  translucent: 'rgba(0, 0, 0, 0.5)',
   // 浅色背景
   lightBg: '#f1f2f6',
   lighter: '#F3F3F3',

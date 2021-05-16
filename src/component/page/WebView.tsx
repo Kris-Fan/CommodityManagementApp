@@ -39,19 +39,15 @@ const MyWebView: React.FC<NavigationInjectedProps> = ({navigation}) => {
     ...color,
     fontSize: Size.iconSize,
   };
-  const modalViewStyle = {
+  const modalViewStyle: StyleProp<ViewStyle> = {
     ...backgroundStyle,
     ...styles.modalViewStyle,
-  };
-  const viewStyle: StyleProp<ViewStyle> = {
-    flexDirection: 'row',
   };
   const [visible, setVisible] = useState(false);
   const onPressShowModal = () => setVisible(true);
   const onClose = () => setVisible(false);
   const [percent, setPercent] = useState(1);
   const webViewRef = useRef<WebView>(null);
-
   return (
     <SafeAreaView style={containerStyle}>
       <NavHeader navigation={navigation} percent={percent}>
@@ -92,7 +88,7 @@ const MyWebView: React.FC<NavigationInjectedProps> = ({navigation}) => {
         maskClosable
         style={styles.transBackground}>
         <View style={modalViewStyle}>
-          <View style={viewStyle}>
+          <View style={styles.flexRowView}>
             <Square
               name="刷新"
               icon={{name: 'reload', needBg: true}}

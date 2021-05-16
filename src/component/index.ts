@@ -1,7 +1,7 @@
 import Section from './common/Section';
-import HomePage from './tabPage/HomePage';
+import HomePage from './home/HomePage';
 import MePage from './my/MePage';
-import CartPage from './tabPage/CartPage';
+import {CartPage} from './order/CartPage';
 import LoginPage from './main/LoginPage';
 // import MainPage from './home/MainPage';
 

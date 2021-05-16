@@ -124,23 +124,35 @@ const RetangleGroup: React.FC<{title?: string; bgColor?: string}> = ({
     flex: 4,
     borderRadius: 5,
   };
-  const titleStyle: StyleProp<TextStyle> = {
-    color: Colors.gray,
-    fontSize: Size.small,
-    marginBottom: 10,
-    marginLeft: 10,
-  };
-  // 是否需要渲染标题
-  const [needRenderTitle] = useState(title);
-  const renderTitle = () => {
-    if (needRenderTitle) {
-      return <Text style={titleStyle}>{needRenderTitle}</Text>;
-    }
+  return (
+    <View style={viewStyle}>
+      {renderRectTitle(title, Colors.grisaillf)}
+      <View style={viewItemStyle}>{children}</View>
+    </View>
+  );
+};
+
+/**
+ * 方形分组-可以制定标题
+ */
+const RetangleGroupLight: React.FC<{
+  title?: string;
+  bgColor?: string;
+  color?: string;
+}> = ({title, color, bgColor, children}) => {
+  const isDarkMode = useColorScheme() === 'dark';
+  const viewStyle: StyleProp<ViewStyle> = {
+    marginLeft: 14,
+    marginRight: 14,
+    padding: 5,
+    flexDirection: 'column',
+    backgroundColor: isDarkMode ? Colors.dark : bgColor || Colors.white,
+    borderRadius: 8,
   };
   return (
     <View style={viewStyle}>
-      {renderTitle()}
-      <View style={viewItemStyle}>{children}</View>
+      {renderRectTitle(title, color)}
+      {children}
     </View>
   );
 };
@@ -165,4 +177,11 @@ const BlankLine: React.FC<{height?: number; needFill?: boolean}> = ({
   return <View style={needFill ? fillStyle : viewStyle} />;
 };
 
-export {Square, RetangleGroup, BlankLine};
+// 是否需要渲染RetangleGroup 标题
+const renderRectTitle = (title?: string, color?: string) => {
+  if (title) {
+    return <Text style={{...styles.lightTitle, color: color}}>{title}</Text>;
+  }
+};
+
+export {Square, RetangleGroup, RetangleGroupLight, BlankLine};

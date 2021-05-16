@@ -8,6 +8,7 @@ import {
   ViewStyle,
   TouchableOpacity,
   Clipboard,
+  TextStyle,
 } from 'react-native';
 import {Colors, Size, Style as styles} from '../../constant';
 import Flex from '@ant-design/react-native/lib/flex';
@@ -23,22 +24,38 @@ export interface ISearchBar {
   onFocus?: (_?: any) => void;
 }
 
-/**
- * 展示行，带标签/icon
- */
-const LabelLine: React.FC<{
+interface LabelLineBase {
   title?: string;
-  content: string;
   icon?: {
     name?: OutlineGlyphMapType;
     fillName?: FillGlyphMapType;
     color?: string;
     size?: number;
   };
-  rightIcon?: boolean;
+  rightIcon?: boolean; // 右侧箭头
+  rightDesc?: string; // 右侧描述
   onPress?: (_?: any) => void;
   onLongPress?: (_?: any) => void;
-}> = ({title, content, icon, rightIcon, onPress, onLongPress}) => {
+}
+
+/**
+ * 展示行，带标签/icon
+ */
+const LabelLine: React.FC<
+  LabelLineBase & {
+    content: string;
+    noUnderLine?: boolean; // 不显示下划线
+  }
+> = ({
+  title,
+  content,
+  icon,
+  rightIcon,
+  rightDesc,
+  noUnderLine,
+  onPress,
+  onLongPress,
+}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const [needIcon] = useState(icon);
   const [needTitle] = useState(title);
@@ -51,12 +68,13 @@ const LabelLine: React.FC<{
     fontSize: Size.normal,
     color: Colors.gray,
   };
+  const underLine = noUnderLine ? {} : styles.btmLine;
   const textViewStyle: StyleProp<ViewStyle> = {
     flex: 3,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    ...styles.btmLine,
+    ...underLine,
     borderBottomColor: isDarkMode ? Colors.darker : Colors.light,
   };
   const contentStyle = {
@@ -69,43 +87,14 @@ const LabelLine: React.FC<{
     color: icon?.color || Colors.gray,
     marginRight: 4,
   };
-  const rightIconStyle = {
-    fontSize: Size.iconSizeLight,
-    color: Colors.light,
-    paddingVertical: 8,
-  };
-  // 渲染图标
-  const renderIcon = () => {
-    if (needIcon) {
-      return (
-        <Icon
-          name={needIcon.name}
-          fillName={needIcon.fillName}
-          style={iconStyle}
-        />
-      );
-    }
-  };
-  // 渲染标题
-  const renderTitle = () => {
-    if (needTitle) {
-      return <Text style={titleStyle}>{needTitle}</Text>;
-    }
-  };
-  // 渲染左侧内容（图标+标题名字）
-  const renderLeftFlex = () => {
-    if (needTitle || needIcon) {
-      return (
-        <Flex justify="start">
-          {renderIcon()}
-          {renderTitle()}
-        </Flex>
-      );
-    }
-  };
   const renderRightView = () => {
     if (rightIcon) {
-      return <Icon name="right" style={rightIconStyle} />;
+      return (
+        <View style={rightViewStyle}>
+          <Text style={rightTextStyle}>{rightDesc}</Text>
+          <Icon name="right" style={rightIconStyle} />
+        </View>
+      );
     }
   };
   const iOnLongPress = (iContent: string) => {
@@ -145,7 +134,7 @@ const LabelLine: React.FC<{
       onPress={onPress}
       onLongPress={() => iOnLongPress(content)}>
       <Flex justify="start">
-        {renderLeftFlex()}
+        {renderLeftFlex(needIcon, iconStyle, needTitle, titleStyle)}
         <View style={textViewStyle}>
           <Text style={contentStyle}>{content}</Text>
           {renderRightView()}
@@ -155,6 +144,65 @@ const LabelLine: React.FC<{
   );
 };
 
+const LabelLineLight: React.FC<
+  LabelLineBase & {color?: {titleColor: string; bgColor: string}}
+> = ({
+  title,
+  icon,
+  rightIcon,
+  rightDesc,
+  onPress,
+  onLongPress,
+  children,
+  color,
+}) => {
+  const isDarkMode = useColorScheme() === 'dark';
+  const [needIcon] = useState(icon);
+  const [needTitle] = useState(title);
+  const viewStyle = {
+    backgroundColor:
+      color?.bgColor || (isDarkMode ? Colors.dark : Colors.white),
+    paddingHorizontal: rightIcon ? 14 : 0,
+  };
+  const titleStyle = {
+    color: color?.titleColor || Colors.grisaillf,
+  };
+  const textViewStyle: StyleProp<ViewStyle> = {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomColor: isDarkMode ? Colors.darker : Colors.light,
+  };
+  const iconStyle = {
+    fontSize: icon?.size || Size.iconSize,
+    color: icon?.color || Colors.grisaillf,
+    marginRight: 4,
+  };
+  const renderRightView = () => {
+    if (rightIcon) {
+      return (
+        <View style={rightViewStyle}>
+          <Text style={rightTextStyle}>{rightDesc}</Text>
+          <Icon name="right" style={rightIconStyle} />
+        </View>
+      );
+    }
+  };
+  return (
+    <TouchableOpacity
+      style={viewStyle}
+      onPress={onPress}
+      onLongPress={onLongPress}>
+      <Flex justify="between">
+        {renderLeftFlex(needIcon, iconStyle, needTitle, titleStyle)}
+        <View style={textViewStyle}>
+          {children}
+          {renderRightView()}
+        </View>
+      </Flex>
+    </TouchableOpacity>
+  );
+};
 /**
  * 自定义搜索栏
  */
@@ -193,4 +241,56 @@ const SearchBar: React.FC<ISearchBar> = ({onBlur, onFocus, onChange}) => {
   );
 };
 
-export {LabelLine, SearchBar};
+// 渲染图标
+const renderIcon = (iNeedIcon: any, iIconStyle: StyleProp<TextStyle>) => {
+  if (iNeedIcon) {
+    return (
+      <Icon
+        name={iNeedIcon.name}
+        fillName={iNeedIcon.fillName}
+        style={iIconStyle}
+      />
+    );
+  }
+};
+// 渲染标题
+const renderTitle = (
+  iNeedTitle: string | undefined,
+  iTitleStyle: StyleProp<TextStyle>,
+) => {
+  if (iNeedTitle) {
+    return <Text style={iTitleStyle}>{iNeedTitle}</Text>;
+  }
+};
+// 渲染左侧内容（图标+标题名字）
+const renderLeftFlex = (
+  iNeedIcon: any,
+  iIconStyle: StyleProp<TextStyle>,
+  iNeedTitle: string | undefined,
+  iTitleStyle: StyleProp<TextStyle>,
+) => {
+  if (iNeedTitle || iNeedIcon) {
+    return (
+      <Flex justify="start">
+        {renderIcon(iNeedIcon, iIconStyle)}
+        {renderTitle(iNeedTitle, iTitleStyle)}
+      </Flex>
+    );
+  }
+};
+const rightViewStyle: StyleProp<ViewStyle> = {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+};
+const rightIconStyle = {
+  fontSize: Size.iconSizeLight,
+  color: Colors.light,
+  paddingVertical: 8,
+};
+const rightTextStyle = {
+  fontSize: Size.small,
+  color: Colors.grisaillf,
+};
+
+export {LabelLine, LabelLineLight, SearchBar};

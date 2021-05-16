@@ -3,7 +3,7 @@ import {Size, Colors} from './';
 
 export const Style = StyleSheet.create({
   textArea: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
     paddingBottom: 8,
     paddingTop: 4,
   },
@@ -77,5 +77,15 @@ export const Style = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 20,
     borderRadius: 12,
+  },
+  flexRowView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  lightTitle: {
+    color: Colors.gray,
+    fontSize: Size.small,
+    marginBottom: 8,
+    marginLeft: 10,
   },
 });

@@ -99,7 +99,7 @@ const SearchHeader: React.FC<ISearchHeader> = ({headerLeft, headerRight}) => {
     display: headerLeft ? 'flex' : 'none',
   };
   const searchStyle: StyleProp<ViewStyle> = {
-    flex: 3,
+    flex: 6,
   };
   const rightStyle: StyleProp<ViewStyle> = {
     flex: 1,
