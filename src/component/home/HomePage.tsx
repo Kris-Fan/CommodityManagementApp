@@ -19,9 +19,10 @@ import {
   StaticsUrl,
   ChartsUrl,
   StaticsCustomerUrl,
+  basicStyle,
 } from '../../constant';
 import {Square, RetangleGroup, BlankLine} from '../common/Square';
-import {SearchHeader} from '../common/Header';
+import {HeaderName, SearchHeader} from '../common/Header';
 // import Popover from '@ant-design/react-native/lib/popover';
 import Icon from '../common/Icon';
 import Modal from '@ant-design/react-native/lib/modal';
@@ -34,27 +35,25 @@ import {MoreDetail} from './MoreDetail';
 const HomePage: React.FC<NavigationInjectedProps> = ({navigation}) => {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const {backgroundStyle, colorLight} = basicStyle(isDarkMode);
   return (
     <SafeAreaView style={styles.fullScreen}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={isDarkMode ? Colors.darker : Colors.lighter}
+        backgroundColor={Colors.transparent}
+        translucent
       />
+      <HeaderName title="" bgColor={Colors.primary} />
       {/* 顶部栏 */}
-      <SearchHeader headerRight={<MorePopover navigation={navigation} />} />
+      <SearchHeader
+        headerRight={
+          <MorePopover navigation={navigation} color={colorLight.color} />
+        }
+        primary
+      />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <RetangleGroup bgColor={Colors.primary}>
-          <Square name="搜索" icon={{name: 'search', color: Colors.white}} />
-          <Square
-            name="卡包"
-            icon={{name: 'credit-card', color: Colors.white}}
-          />
-        </RetangleGroup>
         <BlankLine />
         <RetangleGroup title="商品管理">
           <Square
@@ -142,13 +141,13 @@ const MorePopover: React.FC<NavigationInjectedProps & {color?: string}> = ({
 }) => {
   const isDarkMode = useColorScheme() === 'dark';
   const viewStyle: StyleProp<ViewStyle> = {
-    backgroundColor: isDarkMode ? Colors.darker : color || Colors.white,
+    backgroundColor: Colors.primary,
     flexDirection: 'row',
     justifyContent: 'space-between',
   };
   const iconStyle = {
     fontSize: Size.iconSize,
-    color: isDarkMode ? Colors.gray : Colors.dark,
+    color: Colors.white,
     marginHorizontal: 5,
   };
   const scanStyle = {
@@ -176,6 +175,11 @@ const MorePopover: React.FC<NavigationInjectedProps & {color?: string}> = ({
         maskClosable
         style={styles.transBackground}>
         <View style={modalViewStyle}>
+          <HeaderName
+            title="扫一扫"
+            color={color}
+            descBottpm="可识别商品条形码，联系人二维码"
+          />
           <MoreDetail navigation={navigation} onClose={onClose} />
           <Button name="关闭" onPress={onClose} />
         </View>

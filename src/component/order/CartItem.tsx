@@ -11,10 +11,10 @@ import {
 import Flex from '@ant-design/react-native/lib/flex';
 import Stepper from '@ant-design/react-native/lib/stepper';
 import List from '@ant-design/react-native/lib/list';
-import {Colors, Style as styles, Size} from '../../constant';
+import {Colors, Style as styles, basicStyle, Size} from '../../constant';
 import {iSymbols} from '../../constant/const';
 import {Square} from '../common/Square';
-import {LabelLine, LabelLineLight} from '../common/LabelLine';
+import {LabelLineLight} from '../common/LabelLine';
 
 /**
  * 购物车产品项目
@@ -27,19 +27,11 @@ export const CartItem: React.FC<{
   onLongPress?: (_?: any) => void;
 }> = ({title, price, fixedPrice, children, onPress, onLongPress}) => {
   const isDarkMode = useColorScheme() === 'dark';
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.dark : Colors.white,
-  };
-  const color = {
-    color: isDarkMode ? Colors.white : Colors.dark,
-  };
-  const colorLight = {
-    color: isDarkMode ? Colors.gray : Colors.grisaillf,
-  };
+  const {backgroundStyleLight, color, colorLight} = basicStyle(isDarkMode);
   const itemStyle: StyleProp<ViewStyle> = {
     marginBottom: 5,
-    paddingBottom: 5,
-    ...backgroundStyle,
+    paddingVertical: 5,
+    ...backgroundStyleLight,
     ...styles.commonBorderRadius,
   };
   const titleStyle: StyleProp<TextStyle> = {
@@ -96,8 +88,9 @@ export const CartItem: React.FC<{
           </TouchableOpacity>
         </View>
       </Flex>
-      <List style={{borderBottomWidth: 0, borderColor: Colors.primaryActive}}>
+      <List style={[backgroundStyleLight]}>
         <List.Item
+          style={backgroundStyleLight}
           extra={
             <Stepper
               key="1"
@@ -106,12 +99,13 @@ export const CartItem: React.FC<{
               readOnly={false}
               defaultValue={1}
               onChange={onChange}
+              inputStyle={color}
             />
           }>
           <Text style={normalTextStyle}>购买数量：</Text>
         </List.Item>
       </List>
-      <LabelLineLight title="优惠金额" rightIcon rightDesc="666" />
+      <LabelLineLight title="优惠金额：" rightIcon rightDesc="666" />
     </View>
   );
 };

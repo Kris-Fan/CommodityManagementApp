@@ -27,7 +27,8 @@ const MePage: React.FC<{}> = () => {
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={isDarkMode ? Colors.darker : Colors.white}
+        backgroundColor={Colors.transparent}
+        translucent
       />
       <ScrollView>
         <MyHeader />

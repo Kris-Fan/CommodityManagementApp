@@ -25,7 +25,7 @@ import Icon from '../common/Icon';
 import Circle from '../common/Circle';
 import {LabelLine} from '../common/LabelLine';
 import {Square, BlankLine} from '../common/Square';
-import {NavHeader} from '../common/Header';
+import {HeaderName, NavHeader} from '../common/Header';
 import {convertToTelephone} from '../../utils/displayFormat';
 import Toast from '@ant-design/react-native/lib/toast';
 import Modal from '@ant-design/react-native/lib/modal';
@@ -66,10 +66,8 @@ const Detail: React.FC<NavigationInjectedProps> = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.fullScreen}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
+      <HeaderName title="" bgColor={Colors.white} />
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <NavHeader navigation={navigation} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"

@@ -144,6 +144,9 @@ const LabelLine: React.FC<
   );
 };
 
+/**
+ * 展示行，带标签/icon，右侧内容可以完全自定义
+ */
 const LabelLineLight: React.FC<
   LabelLineBase & {color?: {titleColor: string; bgColor: string}}
 > = ({
@@ -203,6 +206,7 @@ const LabelLineLight: React.FC<
     </TouchableOpacity>
   );
 };
+
 /**
  * 自定义搜索栏
  */
@@ -233,9 +237,11 @@ const SearchBar: React.FC<ISearchBar> = ({onBlur, onFocus, onChange}) => {
         style={inputStyle}
         placeholder="搜索..."
         clearButtonMode="while-editing"
+        selectionColor={Colors.primary}
         onBlur={onBlur}
         onFocus={onFocus}
         onChange={onChange}
+        maxLength={20}
       />
     </View>
   );

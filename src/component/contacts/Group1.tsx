@@ -25,25 +25,12 @@ const Group1: React.FC<NavigationInjectedProps> = ({navigation}) => {
     ...styles.alpha,
     marginBottom: 20,
   };
-  /*
-  const [visible, setVisiable] = useState(false);
-  const onLongPress = () => setVisiable(true);
-  const onClose = () => setVisiable(false);
-  <Button name="primary" onPress={onLongPress} />
-  <Modal
-    popup
-    visible={visible}
-    animationType="slide-up"
-    onClose={onClose}>
-    <View style={{paddingVertical: 20, paddingHorizontal: 20}}>
-      <Text style={{textAlign: 'center'}}>Content...</Text>
-      <Text style={{textAlign: 'center'}}>Content...</Text>
-      <Button name="primary" onPress={onClose} />
-    </View>
-  </Modal> */
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        translucent
+      />
       <SearchBar
         placeholder={'搜索联系人'}
         onChange={value => Toast.fail(value)}

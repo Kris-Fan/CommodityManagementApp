@@ -6,9 +6,10 @@ import {
   useColorScheme,
   StyleProp,
   ViewStyle,
+  TextStyle,
 } from 'react-native';
 import Icon from './Icon';
-import {Colors, Size} from '../../constant';
+import {Colors, Size, basicStyle} from '../../constant';
 import Flex from '@ant-design/react-native/lib/flex';
 import Progress from '@ant-design/react-native/lib/progress';
 import {
@@ -31,6 +32,7 @@ interface INavHeader {
 interface ISearchHeader extends ISearchBar {
   headerLeft?: React.ReactNode;
   headerRight?: React.ReactNode;
+  primary?: boolean;
 }
 
 const NavHeader: React.FC<INavHeader> = ({
@@ -83,11 +85,19 @@ const NavHeader: React.FC<INavHeader> = ({
   );
 };
 
-const SearchHeader: React.FC<ISearchHeader> = ({headerLeft, headerRight}) => {
+const SearchHeader: React.FC<ISearchHeader> = ({
+  headerLeft,
+  headerRight,
+  primary,
+}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const [showRight, setShowRight] = useState(true);
   const headStyle: StyleProp<ViewStyle> = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.white,
+    backgroundColor: primary
+      ? Colors.primary
+      : isDarkMode
+      ? Colors.darker
+      : Colors.white,
     flexDirection: 'row',
     justifyContent: 'space-between',
     flexWrap: 'nowrap',
@@ -118,4 +128,39 @@ const SearchHeader: React.FC<ISearchHeader> = ({headerLeft, headerRight}) => {
   );
 };
 
-export {NavHeader, SearchHeader};
+const HeaderName: React.FC<{
+  title: string;
+  color?: string;
+  bgColor?: string;
+  top?: boolean;
+  descBottpm?: string;
+}> = ({title, color, bgColor, top, descBottpm}) => {
+  const isDarkMode = useColorScheme() === 'dark';
+  const {backgroundStyle, color: titleColor, colorLight} = basicStyle(
+    isDarkMode,
+  );
+  const headStyle: StyleProp<ViewStyle> = {
+    backgroundColor: bgColor || backgroundStyle.backgroundColor,
+    paddingHorizontal: 20,
+    paddingTop: top ? 30 : 0,
+    paddingBottom: 4,
+  };
+  const titleStyle: StyleProp<TextStyle> = {
+    color: color || titleColor.color,
+    fontSize: Size.header,
+    fontWeight: '700',
+  };
+  const renderDesc = () => {
+    if (descBottpm) {
+      return <Text style={[colorLight]}>{descBottpm}</Text>;
+    }
+  };
+  return (
+    <View style={headStyle}>
+      <Text style={titleStyle}>{title}</Text>
+      {renderDesc()}
+    </View>
+  );
+};
+
+export {NavHeader, SearchHeader, HeaderName};

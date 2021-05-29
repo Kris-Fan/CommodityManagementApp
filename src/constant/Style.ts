@@ -2,6 +2,9 @@ import {StyleSheet} from 'react-native';
 import {Size, Colors} from './';
 
 export const Style = StyleSheet.create({
+  paddingHorizontal: {
+    paddingHorizontal: 20,
+  },
   textArea: {
     paddingHorizontal: 20,
     paddingBottom: 8,
@@ -15,7 +18,7 @@ export const Style = StyleSheet.create({
     backgroundColor: Colors.transparent,
   },
   sectionContainer: {
-    marginTop: 32,
+    marginTop: 14,
     paddingHorizontal: 24,
   },
   sectionTitle: {
@@ -88,4 +91,31 @@ export const Style = StyleSheet.create({
     marginBottom: 8,
     marginLeft: 10,
   },
+  input: {
+    minWidth: 250,
+    fontSize: Size.small,
+    marginLeft: 5,
+    flex: 1,
+  },
 });
+
+export const basicStyle = (isDarkMode: boolean) => {
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
+  const backgroundStyleLight = {
+    backgroundColor: isDarkMode ? Colors.dark : Colors.white,
+  };
+  const color = {
+    color: isDarkMode ? Colors.white : Colors.dark,
+  };
+  const colorLight = {
+    color: isDarkMode ? Colors.gray : Colors.grisaillf,
+  };
+  return {
+    backgroundStyle,
+    backgroundStyleLight,
+    color,
+    colorLight,
+  };
+};

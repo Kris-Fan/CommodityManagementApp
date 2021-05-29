@@ -16,6 +16,7 @@ import {FillGlyphMapType} from '@ant-design/icons-react-native/lib/index';
 import {OutlineGlyphMapType} from '@ant-design/icons-react-native/lib/index';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {AnimatedValue} from 'react-navigation';
+import {Button} from '../common/Button';
 
 const {height} = Dimensions.get('window');
 
@@ -55,11 +56,15 @@ interface ILoading {
     color?: string;
   };
   text?: string;
+  button?: {
+    name: string;
+    onPress: (_?: any) => void;
+  };
 }
 /**
  * 加载中
  */
-export const Loading: React.FC<ILoading> = ({type, icon, text}) => {
+export const Loading: React.FC<ILoading> = ({type, icon, text, button}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lightBg,
@@ -100,6 +105,11 @@ export const Loading: React.FC<ILoading> = ({type, icon, text}) => {
       ],
     };
   }
+  const renderButton = () => {
+    if (button) {
+      return <Button name={button.name} onPress={button.onPress} />;
+    }
+  };
   return (
     <SafeAreaView style={containerStyle}>
       <TouchableOpacity style={viewStyle}>
@@ -111,6 +121,7 @@ export const Loading: React.FC<ILoading> = ({type, icon, text}) => {
           />
         </Animated.View>
         <Text style={color}>{text || TipsEnum[type || 'inbox']}</Text>
+        {renderButton()}
       </TouchableOpacity>
     </SafeAreaView>
   );

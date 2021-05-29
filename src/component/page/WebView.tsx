@@ -1,12 +1,10 @@
 import React, {useState, useRef} from 'react';
 import {
-  StyleProp,
-  ViewStyle,
   useColorScheme,
   Dimensions,
   TouchableOpacity,
   View,
-  Text,
+  StatusBar,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import {NavHeader} from '../common/Header';
@@ -39,10 +37,6 @@ const MyWebView: React.FC<NavigationInjectedProps> = ({navigation}) => {
     ...color,
     fontSize: Size.iconSize,
   };
-  const modalViewStyle: StyleProp<ViewStyle> = {
-    ...backgroundStyle,
-    ...styles.modalViewStyle,
-  };
   const [visible, setVisible] = useState(false);
   const onPressShowModal = () => setVisible(true);
   const onClose = () => setVisible(false);
@@ -50,10 +44,13 @@ const MyWebView: React.FC<NavigationInjectedProps> = ({navigation}) => {
   const webViewRef = useRef<WebView>(null);
   return (
     <SafeAreaView style={containerStyle}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        translucent
+      />
       <NavHeader navigation={navigation} percent={percent}>
         <TouchableOpacity onPress={onPressShowModal}>
           <Icon name="ellipsis" style={moreIconStyle} />
-          <Text style={color}>更多</Text>
         </TouchableOpacity>
       </NavHeader>
       <WebView
@@ -87,7 +84,7 @@ const MyWebView: React.FC<NavigationInjectedProps> = ({navigation}) => {
         closable={true}
         maskClosable
         style={styles.transBackground}>
-        <View style={modalViewStyle}>
+        <View style={[backgroundStyle, styles.modalViewStyle]}>
           <View style={styles.flexRowView}>
             <Square
               name="刷新"

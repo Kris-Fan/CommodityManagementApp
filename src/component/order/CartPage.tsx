@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useRef} from 'react';
 import {
   Dimensions,
   SafeAreaView,
@@ -10,32 +10,64 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import InputItem from '@ant-design/react-native/lib/input-item';
-import List from '@ant-design/react-native/lib/list';
-import {Section} from '..';
-import {Colors, Style as styles} from '../../constant';
-import {Button} from '../common/Button';
+import Modal from '@ant-design/react-native/lib/modal';
+import {Colors, Size, Style as styles, basicStyle} from '../../constant';
+import {Button, GhostButton} from '../common/Button';
 import {LabelLine, LabelLineLight} from '../common/LabelLine';
-import {BlankLine, RetangleGroup, RetangleGroupLight} from '../common/Square';
+import {BlankLine, RetangleGroupLight} from '../common/Square';
+import {HeaderName} from '../common/Header';
 import {CartItem} from './CartItem';
+import {ContactTips, SelectCoupon} from './ModalTip';
+import {NavigationInjectedProps} from 'react-navigation';
+import {TextInput} from 'react-native-gesture-handler';
 
 const {width, height} = Dimensions.get('window');
+
+enum ModalContentEnum {
+  COUPON,
+  CONTACTS,
+}
+
 /**
  * 订单页面
  */
-export const CartPage: React.FC<{}> = () => {
+export const CartPage: React.FC<NavigationInjectedProps> = ({navigation}) => {
   const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    height,
-  };
+  const {backgroundStyle, backgroundStyleLight, color, colorLight} = basicStyle(
+    isDarkMode,
+  );
   const pageArea = {
     paddingHorizontal: 12,
   };
+  const [visible, setVisible] = useState(false);
+  const onShowModal = () => setVisible(true);
+  const onClose = () => setVisible(false);
+  const [modalContentType, setModalContentType] = useState(
+    ModalContentEnum.CONTACTS,
+  );
+  const showContactTips = () => setModalContentType(ModalContentEnum.CONTACTS);
+  const showCouponTips = () => setModalContentType(ModalContentEnum.COUPON);
+  const modalRef = useRef<Modal>(null);
+  const renderModal = () => {
+    if (modalContentType === ModalContentEnum.CONTACTS) {
+      return <ContactTips navigation={navigation} current={modalRef.current} />;
+    }
+    if (modalContentType === ModalContentEnum.COUPON) {
+      return <SelectCoupon />;
+    }
+  };
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+    <SafeAreaView style={[backgroundStyle, {height: height}]}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        translucent
+      />
+      <HeaderName
+        title="订单"
+        color={Colors.white}
+        bgColor={Colors.primary}
+        top
+      />
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <BlankLine height={20} />
         <RetangleGroupLight
@@ -46,7 +78,15 @@ export const CartPage: React.FC<{}> = () => {
             title="客户AA"
             icon={{name: 'user', color: Colors.white}}
             color={{bgColor: Colors.transparent, titleColor: Colors.light}}
-            rightIcon>
+            rightIcon
+            onPress={() => {
+              showContactTips();
+              onShowModal();
+            }}
+            onLongPress={() => {
+              showContactTips();
+              onShowModal();
+            }}>
             <Text style={{color: Colors.light}}>aaaas</Text>
           </LabelLineLight>
         </RetangleGroupLight>
@@ -61,11 +101,30 @@ export const CartPage: React.FC<{}> = () => {
         </View>
         <BlankLine height={20} />
         <RetangleGroupLight>
-          <List>
-            <InputItem clear placeholder="text">
-              备注信息
-            </InputItem>
-          </List>
+          <LabelLineLight>
+            <View
+              style={[
+                backgroundStyleLight,
+                styles.flexRowView,
+                styles.paddingHorizontal,
+              ]}>
+              <Text style={[color, {fontSize: Size.normal}]}>备注</Text>
+              <TextInput
+                placeholder="请输入备注信息..."
+                style={[
+                  styles.input,
+                  colorLight,
+                  backgroundStyle,
+                  styles.btnStyle,
+                  styles.paddingHorizontal,
+                ]}
+                multiline
+                clearButtonMode="always"
+                selectionColor={Colors.primary}
+                maxLength={100}
+              />
+            </View>
+          </LabelLineLight>
         </RetangleGroupLight>
         <RetangleGroupLight>
           <LabelLine
@@ -74,11 +133,35 @@ export const CartPage: React.FC<{}> = () => {
             rightIcon
             rightDesc="666"
             noUnderLine
+            onLongPress={() => {
+              onShowModal();
+              showCouponTips();
+            }}
+            onPress={() => {
+              onShowModal();
+              showCouponTips();
+            }}
           />
         </RetangleGroupLight>
         <BlankLine height={200} />
       </ScrollView>
       <CartBottom />
+      {/*浮层 */}
+      <Modal
+        popup
+        visible={visible}
+        animationType="slide-up"
+        onClose={onClose}
+        closable={true}
+        maskClosable
+        style={styles.transBackground}
+        ref={modalRef}>
+        <View style={[backgroundStyleLight, styles.modalViewStyle]}>
+          {renderModal()}
+          <BlankLine />
+          <GhostButton name="取消" onPress={onClose} />
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -88,14 +171,9 @@ export const CartPage: React.FC<{}> = () => {
  */
 const CartBottom: React.FC<{}> = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.dark : Colors.white,
-  };
-  const color = {
-    color: isDarkMode ? Colors.gray : Colors.grisaillf,
-  };
+  const {backgroundStyleLight, color, colorLight} = basicStyle(isDarkMode);
   const containerStyle: StyleProp<ViewStyle> = {
-    ...backgroundStyle,
+    ...backgroundStyleLight,
     ...styles.flexRowView,
     width,
     paddingVertical: 5,
@@ -103,16 +181,16 @@ const CartBottom: React.FC<{}> = () => {
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'flex-end',
-    marginBottom: 50,
+    marginBottom: 18,
   };
   return (
     <View style={containerStyle}>
       <View>
         <View style={styles.flexRowView}>
-          <Text>合计：</Text>
-          <Text>6666$</Text>
+          <Text style={color}>合计：</Text>
+          <Text style={color}>6666$</Text>
         </View>
-        <Text>总优惠：0</Text>
+        <Text style={colorLight}>总优惠：0</Text>
       </View>
       <Button name="创建订单" />
     </View>

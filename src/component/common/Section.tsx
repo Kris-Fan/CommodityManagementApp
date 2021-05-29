@@ -9,6 +9,21 @@ const Section: React.FC<{
   title: string;
 }> = ({children, title}) => {
   const isDarkMode = useColorScheme() === 'dark';
+  const renderChildren = () => {
+    if (children) {
+      return (
+        <Text
+          style={[
+            styles.sectionDescription,
+            {
+              color: isDarkMode ? Colors.light : Colors.dark,
+            },
+          ]}>
+          {children}
+        </Text>
+      );
+    }
+  };
   return (
     <View style={styles.sectionContainer}>
       <Text
@@ -20,15 +35,7 @@ const Section: React.FC<{
         ]}>
         {title}
       </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+      {renderChildren()}
     </View>
   );
 };
