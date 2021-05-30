@@ -9,7 +9,8 @@ import {
   Image,
   ImageStyle,
 } from 'react-native';
-import {Colors, Style as styles, basicStyle, Size} from '../../constant';
+import {Colors, Size} from '../../constant';
+import {Style as styles, basicStyle} from '../../constant/Style';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {DisplayPrice} from '../common/Price';
 import {displaySaleNumber} from '../../utils/numberUtil';

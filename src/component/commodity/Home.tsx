@@ -10,14 +10,8 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {
-  Colors,
-  Style as styles,
-  basicStyle,
-  Size,
-  BaseUrl,
-  ImageUrl,
-} from '../../constant';
+import {Colors, Size, BaseUrl, ImageUrl} from '../../constant';
+import {Style as styles, basicStyle} from '../../constant/Style';
 import {NavigationInjectedProps} from 'react-navigation';
 import {HeaderName, SearchHeader} from '../common/Header';
 import Icon from '../common/Icon';
@@ -64,9 +58,7 @@ const Home: React.FC<NavigationInjectedProps> = ({navigation}) => {
             }
             saleNumber={990}
             onPress={() => navigation.navigate('CommodityDetail')}
-            imageUri={
-              BaseUrl + ImageUrl + '/1622369730110/1622369730124_7023.png'
-            }
+            imageUri={BaseUrl + ImageUrl + '/test.png'}
           />
           <Item
             title={'测试商品名4'}

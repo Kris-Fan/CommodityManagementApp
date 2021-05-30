@@ -9,7 +9,8 @@ import {
   TextStyle,
 } from 'react-native';
 import Icon from './Icon';
-import {Colors, Size, basicStyle} from '../../constant';
+import {Colors, Size} from '../../constant';
+import {basicStyle} from '../../constant/Style';
 import Flex from '@ant-design/react-native/lib/flex';
 import Progress from '@ant-design/react-native/lib/progress';
 import {

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, useColorScheme, View} from 'react-native';
-import {Colors, Style as styles} from '../../constant';
+import {Colors} from '../../constant';
+import {Style as styles} from '../../constant/Style';
 
 /**
  * 标题-内容组件

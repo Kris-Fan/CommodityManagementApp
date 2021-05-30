@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import {NavHeader} from '../common/Header';
-import {Colors, BaseUrl, Size, Style as styles} from '../../constant';
+import {Colors, BaseUrl, Size} from '../../constant';
+import {Style as styles} from '../../constant/Style';
 import {NavigationInjectedProps} from 'react-navigation';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from '../common/Icon';

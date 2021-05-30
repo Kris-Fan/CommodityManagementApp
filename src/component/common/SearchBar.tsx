@@ -3,7 +3,8 @@ import {useColorScheme, StyleProp, TextStyle} from 'react-native';
 import AntSearchBar from '@ant-design/react-native/lib/search-bar';
 import {WithThemeStyles} from '@ant-design/react-native/lib/style';
 import {SearchBarStyle} from '@ant-design/react-native/lib/search-bar/style';
-import {Colors, Style as styles} from '../../constant';
+import {Colors} from '../../constant';
+import {Style as styles} from '../../constant/Style';
 import {
   SearchBarPropsType,
   SearchBarState,

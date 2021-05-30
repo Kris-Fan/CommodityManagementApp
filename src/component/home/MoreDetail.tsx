@@ -1,8 +1,9 @@
 import React from 'react';
 import {View} from 'react-native';
-import {Colors, Style as styles} from '../../constant';
+import {Colors} from '../../constant';
 import {Square, BlankLine} from '../common/Square';
 import {NavigationInjectedProps} from 'react-navigation';
+import {Style as styles} from '../../constant/Style';
 
 /**
  * 首页-浮层功能区

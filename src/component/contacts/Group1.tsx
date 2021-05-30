@@ -7,7 +7,8 @@ import {
   Text,
 } from 'react-native';
 import ContactItem from '../common/ContactItem';
-import {Colors, Style as styles, Mock} from '../../constant';
+import {Colors, Mock} from '../../constant';
+import {Style as styles} from '../../constant/Style';
 import SearchBar from '../common/SearchBar';
 import Toast from '@ant-design/react-native/lib/toast';
 import {NavigationInjectedProps} from 'react-navigation';

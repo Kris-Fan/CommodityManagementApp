@@ -5,7 +5,8 @@ import {
   StatusBar,
   useColorScheme,
 } from 'react-native';
-import {Colors, Style as styles, basicStyle} from '../../constant';
+import {Colors} from '../../constant';
+import {Style as styles, basicStyle} from '../../constant/Style';
 import {NavigationInjectedProps} from 'react-navigation';
 import {HeaderName, NavHeader} from '../common/Header';
 

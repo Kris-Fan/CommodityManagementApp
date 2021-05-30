@@ -11,7 +11,8 @@ import {
 import Flex from '@ant-design/react-native/lib/flex';
 import Stepper from '@ant-design/react-native/lib/stepper';
 import List from '@ant-design/react-native/lib/list';
-import {Colors, Style as styles, basicStyle, Size} from '../../constant';
+import {Colors, Size} from '../../constant';
+import {Style as styles, basicStyle} from '../../constant/Style';
 import {iSymbols} from '../../constant/const';
 import {Square} from '../common/Square';
 import {LabelLineLight} from '../common/LabelLine';

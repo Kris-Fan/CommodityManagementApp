@@ -11,7 +11,8 @@ import {
   ViewStyle,
 } from 'react-native';
 import Modal from '@ant-design/react-native/lib/modal';
-import {Colors, Size, Style as styles, basicStyle} from '../../constant';
+import {Colors, Size} from '../../constant';
+import {Style as styles, basicStyle} from '../../constant/Style';
 import {Button, GhostButton} from '../common/Button';
 import {LabelLine, LabelLineLight} from '../common/LabelLine';
 import {BlankLine, RetangleGroupLight} from '../common/Square';

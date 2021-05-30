@@ -4,7 +4,8 @@ import AntButton from '@ant-design/react-native/lib/button';
 import {ButtonPropsType} from '@ant-design/react-native/lib/button/PropsType';
 import {ButtonStyles} from '@ant-design/react-native/lib/button/style';
 import {WithThemeStyles} from '@ant-design/react-native/lib/style';
-import {Colors, Style as styles} from '../../constant';
+import {Colors} from '../../constant';
+import {Style as styles} from '../../constant/Style';
 
 interface IButtonType extends ButtonPropsType, WithThemeStyles<ButtonStyles> {
   activeStyle?: StyleProp<ViewStyle>;

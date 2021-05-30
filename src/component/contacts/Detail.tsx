@@ -13,12 +13,8 @@ import {
   Linking,
   Clipboard,
 } from 'react-native';
-import {
-  Colors,
-  Style as styles,
-  Size,
-  StaticsCustomerUrl,
-} from '../../constant';
+import {Colors, Size, StaticsCustomerUrl} from '../../constant';
+import {Style as styles} from '../../constant/Style';
 import {NavigationInjectedProps} from 'react-navigation';
 import Flex from '@ant-design/react-native/lib/flex';
 import Icon from '../common/Icon';

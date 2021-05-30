@@ -6,7 +6,8 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import {Colors, Style as styles} from '../../constant';
+import {Colors} from '../../constant';
+import {Style as styles} from '../../constant/Style';
 
 const links = [
   {

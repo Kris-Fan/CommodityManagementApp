@@ -3,7 +3,8 @@ import {Text, View, StyleProp, TextStyle} from 'react-native';
 import Modal from '@ant-design/react-native/lib/modal';
 import Icon from '@ant-design/react-native/lib/icon';
 import {Button} from './Button';
-import {Colors, Style as styles, Size} from '../../constant';
+import {Colors, Size} from '../../constant';
+import {Style as styles} from '../../constant/Style';
 
 const titleStyle: StyleProp<TextStyle> = {
   fontSize: Size.normal,

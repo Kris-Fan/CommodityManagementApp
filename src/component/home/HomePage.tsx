@@ -12,15 +12,14 @@ import {
 import {
   Colors,
   Size,
-  Style as styles,
   SearchUrl,
   SiginUrl,
   PermissionUrl,
   StaticsUrl,
   ChartsUrl,
   StaticsCustomerUrl,
-  basicStyle,
 } from '../../constant';
+import {Style as styles, basicStyle} from '../../constant/Style';
 import {Square, RetangleGroup, BlankLine} from '../common/Square';
 import {HeaderName, SearchHeader} from '../common/Header';
 // import Popover from '@ant-design/react-native/lib/popover';

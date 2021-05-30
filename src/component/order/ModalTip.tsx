@@ -1,7 +1,8 @@
 import React from 'react';
 import {Text, View, StyleProp, useColorScheme, ViewStyle} from 'react-native';
 import Modal from '@ant-design/react-native/lib/modal';
-import {Colors, Style as styles, Size, basicStyle} from '../../constant';
+import {Colors, Size} from '../../constant';
+import {Style as styles, basicStyle} from '../../constant/Style';
 import {BlankLine, Square} from '../common/Square';
 import Section from '../common/Section';
 import {Button} from '../common/Button';

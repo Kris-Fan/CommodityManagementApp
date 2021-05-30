@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, View, useColorScheme, StyleProp, ViewStyle} from 'react-native';
-import {Colors, Style as styles} from '../../constant';
+import {Colors} from '../../constant';
+import {Style as styles} from '../../constant/Style';
 import Circle from '../common/Circle';
 import Flex from '@ant-design/react-native/lib/flex';
 

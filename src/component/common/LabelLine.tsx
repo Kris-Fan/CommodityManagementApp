@@ -10,7 +10,8 @@ import {
   Clipboard,
   TextStyle,
 } from 'react-native';
-import {Colors, Size, Style as styles} from '../../constant';
+import {Colors, Size} from '../../constant';
+import {Style as styles} from '../../constant/Style';
 import Flex from '@ant-design/react-native/lib/flex';
 import Icon from '../common/Icon';
 import {FillGlyphMapType} from '@ant-design/icons-react-native/lib/index';

@@ -4,4 +4,3 @@ import Mock from './Mock';
 
 export {Colors, Size, Mock};
 export * from './Api';
-export * from './Style';

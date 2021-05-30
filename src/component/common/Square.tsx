@@ -11,8 +11,8 @@ import {
 import Icon from '../common/Icon';
 import {FillGlyphMapType} from '@ant-design/icons-react-native/lib/index';
 import {OutlineGlyphMapType} from '@ant-design/icons-react-native/lib/index';
-import {Colors, Size, Style as styles} from '../../constant';
-
+import {Colors, Size} from '../../constant';
+import {Style as styles} from '../../constant/Style';
 interface ISquare {
   name: string;
   descName?: string;

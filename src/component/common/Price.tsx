@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleProp, Text, View, ViewStyle} from 'react-native';
-import {Colors, Style as styles, Size} from '../../constant';
+import {Colors, Size} from '../../constant';
+import {Style as styles} from '../../constant/Style';
 import {iSymbols} from '../../constant/const';
 import {displayPrice} from '../../utils/numberUtil';
 
