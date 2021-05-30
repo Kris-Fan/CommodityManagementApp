@@ -13,3 +13,5 @@ export const PermissionUrl = '/permission';
 export const SiginUrl = '/login/signin';
 // 登录
 export const LoginUrl = '/login';
+
+export const ImageUrl = '/images/product';

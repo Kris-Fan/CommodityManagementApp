@@ -34,22 +34,21 @@ const TopTabNavigator = createMaterialTopTabNavigator(
       inactiveTintColor: Colors.gray, //label和icon的前景色 活跃状态下（未选中）
       style: {
         backgroundColor: Colors.transparent, //TabBar 的背景颜色
-        marginLeft: -20,
-        paddingLeft: 0,
+        marginTop: 20,
+        flexDirection: 'row',
+        justifyContent: 'center',
       },
       indicatorStyle: {
         height: 6,
         maxWidth: 24,
         backgroundColor: Colors.primary,
         borderRadius: 3,
-        marginLeft: 50,
+        justifyContent: 'center',
+        width: '20%',
+        left: '30%',
       }, //设置 indicator(tab下面的那条线)的样式
       labelStyle: {
         ...styles.tabBar,
-        marginTop: 0,
-        marginBottom: 1,
-        marginLeft: 0,
-        paddingLeft: 0,
       }, //设置TabBar标签的样式
       allowFontScaling: true,
     },

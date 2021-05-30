@@ -5,6 +5,9 @@ export const Style = StyleSheet.create({
   paddingHorizontal: {
     paddingHorizontal: 20,
   },
+  paddingVertical: {
+    paddingVertical: 5,
+  },
   textArea: {
     paddingHorizontal: 20,
     paddingBottom: 8,
@@ -96,6 +99,10 @@ export const Style = StyleSheet.create({
     fontSize: Size.small,
     marginLeft: 5,
     flex: 1,
+  },
+  // image item height
+  commodityItemHeight: {
+    height: 125,
   },
 });
 

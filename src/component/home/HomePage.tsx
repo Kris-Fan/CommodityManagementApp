@@ -59,15 +59,12 @@ const HomePage: React.FC<NavigationInjectedProps> = ({navigation}) => {
           <Square
             name="全部商品"
             icon={{fillName: 'appstore', color: Colors.primaryLight}}
-            onPress={() => navigation.navigate('MyWebView', {url: SearchUrl})}
+            onPress={() => navigation.navigate('CommodityNavigator')}
           />
           <Square
             name="添加商品"
             icon={{name: 'appstore-add', color: Colors.sand}}
-          />
-          <Square
-            name="商品分析"
-            icon={{name: 'block', color: Colors.watermelon}}
+            onPress={() => navigation.navigate('CommodityAdd')}
           />
           <Square
             name="历史订单"
@@ -80,6 +77,11 @@ const HomePage: React.FC<NavigationInjectedProps> = ({navigation}) => {
           <Square
             name="进货记录"
             icon={{fillName: 'file-text', color: Colors.sand}}
+          />
+
+          <Square
+            name="补单"
+            icon={{name: 'block', color: Colors.watermelon}}
           />
           <Square name="" />
           <Square name="" />

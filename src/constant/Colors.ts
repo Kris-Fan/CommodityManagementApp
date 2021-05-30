@@ -1,7 +1,9 @@
 // https://flatuicolors.com/palette/cn
 export default {
+  // 蓝色 浅->深
   primaryLight: '#70a1ff',
   primary: '#1e90ff',
+  deepSky: '#5352ed',
   primaryActive: '#3742fa',
   white: '#FFF',
   translucent: 'rgba(0, 0, 0, 0.5)',

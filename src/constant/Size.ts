@@ -1,6 +1,11 @@
 export default {
+  smallest: 10,
   smaller: 12,
   small: 14,
+  /**
+   * 18正常文本大小
+   */
+  normalLight: 16,
   /**
    * 18正常文本大小
    */

@@ -9,16 +9,25 @@ interface IIcon {
   name?: OutlineGlyphMapType;
   fillName?: FillGlyphMapType;
   style?: StyleProp<TextStyle>;
+  size?: number;
+  color?: string;
 }
 
-const Icon: React.FC<IIcon> = ({name, fillName, style}) => {
+const Icon: React.FC<IIcon> = ({name, fillName, style, size, color}) => {
   // 是否需要图标
   const [outline] = useState(name);
+  const iconStye = [style];
+  if (size) {
+    iconStye.push({fontSize: size});
+  }
+  if (color) {
+    iconStye.push({color: color});
+  }
   const renderIcon = () => {
     if (outline) {
-      return <IconOutline name={name || 'appstore'} style={style} />;
+      return <IconOutline name={name || 'appstore'} style={iconStye} />;
     }
-    return <IconFill name={fillName || 'appstore'} style={style} />;
+    return <IconFill name={fillName || 'appstore'} style={iconStye} />;
   };
   return renderIcon();
 };

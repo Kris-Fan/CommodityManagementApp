@@ -4,6 +4,8 @@ import {createStackNavigator} from 'react-navigation-stack';
 import ContactDetail from '../component/contacts/Detail';
 import {MyWebView} from '../component/page/WebView';
 import {ScanQRCode} from '../component/home/ScanQRCode';
+import CommodityNavigator from '../component/commodity/Navigation';
+import Detail from '../component/commodity/Detail';
 // import {HomePage, MePage, LoginPage} from '../component';
 
 // APP的启动页面必须使用createSwitchNavigator，防止按返回按钮回到启动页
@@ -60,8 +62,24 @@ const AppRouter = createStackNavigator({
       gestureEnabled: true,
     },
   },
+  // 扫码页
   ScanQRCode: {
     screen: ScanQRCode,
+    navigationOptions: {
+      headerShown: false,
+      gestureEnabled: true,
+    },
+  },
+  // 商品主页
+  CommodityNavigator: {
+    screen: createAppContainer(CommodityNavigator),
+    navigationOptions: {
+      headerShown: false,
+      gestureEnabled: false,
+    },
+  },
+  CommodityDetail: {
+    screen: Detail,
     navigationOptions: {
       headerShown: false,
       gestureEnabled: true,

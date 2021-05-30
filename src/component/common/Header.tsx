@@ -105,7 +105,6 @@ const SearchHeader: React.FC<ISearchHeader> = ({
     alignItems: 'center',
   };
   const leftStyle: StyleProp<ViewStyle> = {
-    flex: 1,
     display: headerLeft ? 'flex' : 'none',
   };
   const searchStyle: StyleProp<ViewStyle> = {
