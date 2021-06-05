@@ -1,3 +1,5 @@
+import {commodityItemType} from '../common/interface/commodity';
+
 const CONTACT_DATA = [
   {
     alpha: 'A',
@@ -111,6 +113,133 @@ const CONTACT_DATA = [
   },
 ];
 
+const COMMODITY_DATA: {
+  code: number;
+  desc: string;
+  data: commodityItemType[];
+} = {
+  code: 0,
+  desc: 'got success',
+  data: [
+    {
+      id: '1',
+      name: '测试产品1',
+      type: 'ZHN0007',
+      category: 'string',
+      // 商品描述 ，会展示到列表页
+      description: 'string',
+      unit: '件',
+      // purchasePrice: 666,
+      fixedPrice: 888,
+      sellPrice: 888,
+      // 库存数
+      number: 1001,
+      sellNumber: 1,
+      pictures: ['product/test.png'],
+      comment: '无',
+      factoryId: '607173aed05891adfe7baf85',
+      status: 1,
+    },
+    {
+      id: '2',
+      name: '测试商品名称',
+      type: 'ZHN0007',
+      category: 'string',
+      // 商品描述 ，会展示到列表页
+      description:
+        '测试商品名称测试商品名称测试商品名称测试商品名称测试商品名称测试商品名称测试商品名称测试商品名称测试商品名称测试商品名称',
+      unit: '件',
+      // purchasePrice: 666,
+      fixedPrice: 888,
+      sellPrice: 666,
+      // 库存数
+      number: 1001,
+      sellNumber: 100,
+      pictures: ['product/test.png'],
+      comment: '无',
+      factoryId: '607173aed05891adfe7baf85',
+      status: 1,
+    },
+    {
+      id: '3',
+      name: '测试产品3',
+      type: 'ZHN0007',
+      category: 'string',
+      // 商品描述 ，会展示到列表页
+      description: 'breif descbreif descbreif descbreif descbreif desc',
+      unit: '件',
+      // purchasePrice: 666,
+      fixedPrice: 888,
+      sellPrice: 888,
+      // 库存数
+      number: 1001,
+      sellNumber: 10000,
+      pictures: ['product/test.png'],
+      comment: '无',
+      factoryId: '607173aed05891adfe7baf85',
+      status: 1,
+    },
+    {
+      id: '4',
+      name: '测试产品3',
+      type: 'ZHN0007',
+      category: 'string',
+      // 商品描述 ，会展示到列表页
+      description: 'breif descbreif descbreif descbreif descbreif desc',
+      unit: '件',
+      // purchasePrice: 666,
+      fixedPrice: 888,
+      sellPrice: 999,
+      // 库存数
+      number: 1001,
+      sellNumber: 1,
+      pictures: ['product/test.png'],
+      comment: '无',
+      factoryId: '607173aed05891adfe7baf85',
+      status: 1,
+    },
+    {
+      id: '5',
+      name: '测试产品3',
+      type: 'ZHN0007',
+      category: 'string',
+      // 商品描述 ，会展示到列表页
+      description: 'breif descbreif descbreif descbreif descbreif desc',
+      unit: '件',
+      // purchasePrice: 666,
+      fixedPrice: 888,
+      sellPrice: 888,
+      // 库存数
+      number: 1001,
+      sellNumber: 1,
+      pictures: ['product/test.png'],
+      comment: '无',
+      factoryId: '607173aed05891adfe7baf85',
+      status: 1,
+    },
+    {
+      id: '607173dfd05891adfe7baf86',
+      name: '测试产品3',
+      type: 'ZHN0007',
+      category: 'string',
+      // 商品描述 ，会展示到列表页
+      description: 'breif descbreif descbreif descbreif descbreif desc',
+      unit: '件',
+      // purchasePrice: 666,
+      fixedPrice: 888,
+      sellPrice: 888,
+      // 库存数
+      number: 1001,
+      sellNumber: 1,
+      pictures: ['product/test.png'],
+      comment: '无',
+      factoryId: '607173aed05891adfe7baf85',
+      status: 1,
+    },
+  ],
+};
+
 export default {
   CONTACT_DATA,
+  COMMODITY_DATA,
 };

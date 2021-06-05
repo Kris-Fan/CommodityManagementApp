@@ -11,11 +11,14 @@
 import React from 'react';
 import AppNavigation from './src/navigation/AppNavigation';
 import Provider from '@ant-design/react-native/lib/provider';
+import {useColorScheme} from 'react-native';
 
 const App = () => {
+  const scheme = useColorScheme();
+
   return (
     <Provider>
-      <AppNavigation />
+      <AppNavigation theme={scheme === 'dark' ? 'dark' : 'light'} />
     </Provider>
   );
 };

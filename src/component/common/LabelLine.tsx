@@ -18,6 +18,7 @@ import {FillGlyphMapType} from '@ant-design/icons-react-native/lib/index';
 import {OutlineGlyphMapType} from '@ant-design/icons-react-native/lib/index';
 import Toast from '@ant-design/react-native/lib/toast';
 import Modal from '@ant-design/react-native/lib/modal';
+import {RetangleGroupLight} from './Square';
 
 export interface ISearchBar {
   onChange?: (_?: any) => void;
@@ -166,7 +167,7 @@ const LabelLineLight: React.FC<
   const viewStyle = {
     backgroundColor:
       color?.bgColor || (isDarkMode ? Colors.dark : Colors.white),
-    paddingHorizontal: rightIcon ? 14 : 0,
+    paddingHorizontal: rightIcon ? 14 : 6,
   };
   const titleStyle = {
     color: color?.titleColor || Colors.grisaillf,
@@ -244,6 +245,50 @@ const SearchBar: React.FC<ISearchBar> = ({onBlur, onFocus, onChange}) => {
         onChange={onChange}
         maxLength={20}
       />
+    </View>
+  );
+};
+
+export const LabelLineTint: React.FC<{
+  title?: string;
+  name?: string;
+  iconName?: OutlineGlyphMapType;
+  description?: string;
+  onPress?: (_: any) => void;
+  onLongPress?: (_?: any) => void;
+  style?: {color?: string; tintColor?: string; bgColor?: string};
+  rightIcon?: boolean;
+}> = ({
+  title,
+  name,
+  description,
+  onPress,
+  onLongPress,
+  style,
+  iconName,
+  rightIcon,
+}) => {
+  return (
+    <View>
+      <RetangleGroupLight
+        title={title}
+        bgColor={style?.bgColor || Colors.primary}
+        color={style?.color || Colors.light}>
+        <LabelLineLight
+          title={name}
+          icon={{name: iconName, color: style?.tintColor || Colors.white}}
+          color={{
+            bgColor: Colors.transparent,
+            titleColor: style?.color || Colors.light,
+          }}
+          rightIcon={rightIcon}
+          onPress={onPress}
+          onLongPress={onLongPress}>
+          <Text style={{color: style?.color || Colors.light}}>
+            {description}
+          </Text>
+        </LabelLineLight>
+      </RetangleGroupLight>
     </View>
   );
 };

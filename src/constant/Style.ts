@@ -104,6 +104,13 @@ export const Style = StyleSheet.create({
   commodityItemHeight: {
     height: 125,
   },
+  deleteLine: {
+    textDecorationLine: 'line-through',
+  },
+  badge: {
+    borderRadius: 30,
+    paddingHorizontal: 6,
+  },
 });
 
 export const basicStyle = (isDarkMode: boolean) => {
@@ -125,4 +132,16 @@ export const basicStyle = (isDarkMode: boolean) => {
     color,
     colorLight,
   };
+};
+
+export const MyTheme = {
+  dark: false,
+  colors: {
+    primary: Colors.primary,
+    background: Colors.lighter,
+    card: Colors.white,
+    text: Colors.white,
+    border: Colors.lighter,
+    notification: Colors.primaryActive,
+  },
 };

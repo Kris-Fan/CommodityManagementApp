@@ -8,12 +8,16 @@ import {
   ViewStyle,
   Image,
   ImageStyle,
+  Dimensions,
 } from 'react-native';
-import {Colors, Size} from '../../constant';
+import {Size} from '../../constant';
 import {Style as styles, basicStyle} from '../../constant/Style';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {DisplayPrice} from '../common/Price';
+import {DisplayPrice, TagNumber} from '../common/Price';
 import {displaySaleNumber} from '../../utils/numberUtil';
+import {BlankSpace} from '../common/Square';
+
+const {width} = Dimensions.get('window');
 
 interface IItem {
   title: string;
@@ -23,6 +27,7 @@ interface IItem {
   onPress?: (_?: any) => void;
   onLongPress?: (_?: any) => void;
   imageUri?: string;
+  direction?: 'list' | 'warterfall';
 }
 
 /**
@@ -36,48 +41,57 @@ export const Item: React.FC<IItem> = ({
   price,
   saleNumber,
   imageUri = '../../assets/default.png',
+  direction,
 }) => {
   const isDarkMode = useColorScheme() === 'dark';
-  const {backgroundStyle, backgroundStyleLight, color, colorLight} = basicStyle(
-    isDarkMode,
-  );
+  const isWaterfall = direction === 'warterfall';
+  const {backgroundStyle, backgroundStyleLight} = basicStyle(isDarkMode);
   const leftStyle = {
-    flex: 2,
+    flex: isWaterfall ? 1 : 2,
   };
   const rightStyle: StyleProp<ViewStyle> = {
-    flex: 6,
-    marginLeft: 10,
+    flex: isWaterfall ? 1 : 6,
+    marginLeft: isWaterfall ? 0 : 10,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    ...styles.commodityItemHeight,
-  };
-  const titleStyle: StyleProp<TextStyle> = {
-    ...styles.sectionTitle,
-    ...color,
-    fontSize: Size.normalLight,
-  };
-  const contentStyle: StyleProp<TextStyle> = {
-    ...styles.sectionDescription,
-    ...colorLight,
-    fontSize: Size.small,
-    marginTop: 1,
+    height: isWaterfall ? 'auto' : styles.commodityItemHeight.height,
+    width: isWaterfall ? width / 2 - 40 : 'auto',
   };
   const commodityImage: StyleProp<ImageStyle> = {
     ...styles.commonBorderRadius,
-    ...styles.commodityItemHeight,
-    width: '100%',
+    height: isWaterfall
+      ? styles.commodityItemHeight.height * 1.4
+      : styles.commodityItemHeight.height,
+    width: isWaterfall ? width / 2 - 14 : '100%',
     ...backgroundStyle,
   };
+  const containerViewStyle: StyleProp<ViewStyle> = [
+    styles.flexRowView,
+    styles.paddingVertical,
+    styles.paddingHorizontal,
+    backgroundStyleLight,
+  ];
+  if (isWaterfall) {
+    containerViewStyle.push({flexDirection: 'column', flex: 3});
+    containerViewStyle.push({
+      ...styles.commonBorderRadius,
+      margin: 4,
+      paddingVertical: 0,
+      paddingHorizontal: 1,
+    });
+  }
+  const maxTextLength = isWaterfall ? 13 : 50;
+  const iTitle =
+    title.length > maxTextLength - 5
+      ? title.slice(0, maxTextLength - 4) + '...'
+      : title;
   const iContent =
-    content && content?.length > 50 ? content.slice(0, 47) + '...' : content;
+    content && content?.length > maxTextLength
+      ? content.slice(0, maxTextLength - 3) + '...'
+      : content;
   return (
     <TouchableOpacity
-      style={[
-        styles.flexRowView,
-        styles.paddingVertical,
-        styles.paddingHorizontal,
-        backgroundStyleLight,
-      ]}
+      style={containerViewStyle}
       onPress={onPress}
       onLongPress={onLongPress}>
       <View style={leftStyle}>
@@ -88,26 +102,40 @@ export const Item: React.FC<IItem> = ({
         />
       </View>
       <View style={rightStyle}>
-        <View>
-          <Text style={titleStyle}>{title}</Text>
-          <Text style={contentStyle}>{iContent}</Text>
-        </View>
+        <CommodityTitle title={iTitle} content={iContent} />
         <View style={[styles.flexRowView, styles.paddingVertical]}>
-          <DisplayPrice price={price} />
-          <Text
-            style={[
-              colorLight,
-              {fontSize: Size.smaller},
-              styles.paddingHorizontal,
-            ]}>
-            销量: {displaySaleNumber(saleNumber)}
-          </Text>
+          <DisplayPrice price={price} size="small" />
+          <BlankSpace />
+          <TagNumber tag="销量:" number={displaySaleNumber(saleNumber)} />
         </View>
       </View>
     </TouchableOpacity>
   );
 };
 
-/**
- * waterfall瀑布流
- */
+export const CommodityTitle: React.FC<{
+  title?: string;
+  content?: string;
+  bold?: boolean;
+}> = ({title, content, bold}) => {
+  const isDarkMode = useColorScheme() === 'dark';
+  const {color, colorLight} = basicStyle(isDarkMode);
+  const titleStyle: StyleProp<TextStyle> = {
+    ...styles.sectionTitle,
+    ...color,
+    fontSize: bold ? Size.normal : Size.normalLight,
+    fontWeight: bold ? '700' : 'normal',
+  };
+  const contentStyle: StyleProp<TextStyle> = {
+    ...styles.sectionDescription,
+    ...colorLight,
+    fontSize: Size.small,
+    marginTop: 1,
+  };
+  return (
+    <View>
+      <Text style={titleStyle}>{title}</Text>
+      <Text style={contentStyle}>{content}</Text>
+    </View>
+  );
+};

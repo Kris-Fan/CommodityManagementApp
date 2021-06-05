@@ -103,22 +103,28 @@ const Square: React.FC<ISquare> = ({name, descName, icon, onPress}) => {
 /**
  * 方形分组-可以制定标题
  */
-const RetangleGroup: React.FC<{title?: string; bgColor?: string}> = ({
-  title,
-  bgColor,
-  children,
-}) => {
+const RetangleGroup: React.FC<{
+  title?: string;
+  bgColor?: string;
+  justifyContent?:
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly';
+  marginH?: number;
+}> = ({title, bgColor, children, justifyContent, marginH}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const viewStyle: StyleProp<ViewStyle> = {
-    marginLeft: 14,
-    marginRight: 14,
+    marginHorizontal: marginH === undefined ? 14 : marginH || 0,
     padding: 5,
     flexDirection: 'column',
     backgroundColor: isDarkMode ? Colors.dark : bgColor || Colors.white,
     borderRadius: 8,
   };
   const viewItemStyle: StyleProp<ViewStyle> = {
-    justifyContent: 'space-around',
+    justifyContent: justifyContent || 'space-around',
     flexDirection: 'row',
     flexWrap: 'wrap',
     flex: 4,
@@ -175,6 +181,10 @@ const BlankLine: React.FC<{height?: number; needFill?: boolean}> = ({
     backgroundColor: Colors.transparent,
   };
   return <View style={needFill ? fillStyle : viewStyle} />;
+};
+
+export const BlankSpace: React.FC<{width?: string}> = ({width}) => {
+  return <View style={{width: width || Size.small}} />;
 };
 
 // 是否需要渲染RetangleGroup 标题

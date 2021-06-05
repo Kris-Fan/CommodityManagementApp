@@ -152,7 +152,9 @@ const HeaderName: React.FC<{
   };
   const renderDesc = () => {
     if (descBottpm) {
-      return <Text style={[colorLight]}>{descBottpm}</Text>;
+      return (
+        <Text style={{color: color || colorLight.color}}>{descBottpm}</Text>
+      );
     }
   };
   return (

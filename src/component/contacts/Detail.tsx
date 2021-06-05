@@ -61,13 +61,14 @@ const Detail: React.FC<NavigationInjectedProps> = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={styles.fullScreen}>
-      <HeaderName title="" bgColor={Colors.white} />
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+    <SafeAreaView style={[styles.fullScreen, backgroundStyle]}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        translucent
+      />
+      <HeaderName title="" bgColor={backgroundStyle.backgroundColor} />
       <NavHeader navigation={navigation} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View>
           <ContactTitle title={name} />
           <View style={itemStyle}>

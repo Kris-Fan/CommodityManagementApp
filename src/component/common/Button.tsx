@@ -22,13 +22,13 @@ const Button: React.FC<IButtonType> = ({
 }) => {
   const isDarkMode = useColorScheme() === 'dark';
   const BtnStyle = {
-    backgroundColor: isDarkMode ? Colors.dark : Colors.primary,
+    backgroundColor: isDarkMode ? Colors.primaryLight : Colors.primary,
     color: Colors.white,
-    borderColor: isDarkMode ? Colors.gray : Colors.transparent,
+    borderColor: Colors.transparent,
     ...styles.btnStyle,
   };
   const activeStyle = {
-    backgroundColor: isDarkMode ? Colors.dark : Colors.primaryLight,
+    backgroundColor: isDarkMode ? Colors.primary : Colors.primaryLight,
     borderColor: Colors.transparent,
     color: Colors.white,
     ...styles.btnStyle,
@@ -59,21 +59,22 @@ const GhostButton: React.FC<IButtonType> = ({
   const isDarkMode = useColorScheme() === 'dark';
   const BtnStyle = {
     color: isDarkMode ? Colors.white : Colors.primary,
-    borderColor: isDarkMode ? Colors.lighter : Colors.primary,
+    borderColor: isDarkMode ? Colors.grisaillf : Colors.primary,
     ...styles.btnStyle,
   };
   const textStyle = {
-    color: isDarkMode ? Colors.white : Colors.primary,
+    color: isDarkMode ? Colors.light : Colors.primary,
   };
   const activeStyle = {
-    backgroundColor: isDarkMode ? Colors.dark : Colors.lighter,
-    borderColor: isDarkMode ? Colors.white : Colors.primaryActive,
+    backgroundColor: isDarkMode ? Colors.dark : Colors.lightBg,
+    borderColor: isDarkMode ? Colors.lighter : Colors.primaryActive,
+
     ...styles.btnStyle,
   };
   return (
     <AntButton
       style={BtnStyle}
-      activeStyle={activeStyle}
+      activeStyle={[activeStyle]}
       loading={loading}
       disabled={disabled}
       type={'ghost'}

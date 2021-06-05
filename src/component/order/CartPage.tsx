@@ -14,20 +14,16 @@ import Modal from '@ant-design/react-native/lib/modal';
 import {Colors, Size} from '../../constant';
 import {Style as styles, basicStyle} from '../../constant/Style';
 import {Button, GhostButton} from '../common/Button';
-import {LabelLine, LabelLineLight} from '../common/LabelLine';
+import {LabelLine, LabelLineLight, LabelLineTint} from '../common/LabelLine';
 import {BlankLine, RetangleGroupLight} from '../common/Square';
 import {HeaderName} from '../common/Header';
 import {CartItem} from './CartItem';
 import {ContactTips, SelectCoupon} from './ModalTip';
 import {NavigationInjectedProps} from 'react-navigation';
 import {TextInput} from 'react-native-gesture-handler';
+import {ModalContentEnum} from '../../common/enum/modalEnum';
 
 const {width, height} = Dimensions.get('window');
-
-enum ModalContentEnum {
-  COUPON,
-  CONTACTS,
-}
 
 /**
  * 订单页面
@@ -71,26 +67,17 @@ export const CartPage: React.FC<NavigationInjectedProps> = ({navigation}) => {
       />
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <BlankLine height={20} />
-        <RetangleGroupLight
+        <LabelLineTint
           title="订单所属客户"
-          bgColor={Colors.primary}
-          color={Colors.light}>
-          <LabelLineLight
-            title="客户AA"
-            icon={{name: 'user', color: Colors.white}}
-            color={{bgColor: Colors.transparent, titleColor: Colors.light}}
-            rightIcon
-            onPress={() => {
-              showContactTips();
-              onShowModal();
-            }}
-            onLongPress={() => {
-              showContactTips();
-              onShowModal();
-            }}>
-            <Text style={{color: Colors.light}}>aaaas</Text>
-          </LabelLineLight>
-        </RetangleGroupLight>
+          name="客户AA"
+          iconName="user"
+          description="aaaas"
+          rightIcon
+          onPress={() => {
+            showContactTips();
+            onShowModal();
+          }}
+        />
         <BlankLine />
         <View style={pageArea}>
           <CartItem title="商品名字" price={'666'} fixedPrice={'888'}>

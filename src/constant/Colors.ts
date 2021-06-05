@@ -7,6 +7,7 @@ export default {
   primaryActive: '#3742fa',
   white: '#FFF',
   translucent: 'rgba(0, 0, 0, 0.5)',
+  transparent2: 'rgba(0, 0, 0, 0.2)',
   // 浅色背景
   lightBg: '#f1f2f6',
   lighter: '#F3F3F3',
