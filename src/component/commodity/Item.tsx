@@ -10,12 +10,13 @@ import {
   ImageStyle,
   Dimensions,
 } from 'react-native';
-import {Size} from '../../constant';
+import {Size, Colors} from '../../constant';
 import {Style as styles, basicStyle} from '../../constant/Style';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {DisplayPrice, TagNumber} from '../common/Price';
+import {Badge, DisplayPrice, TagNumber} from '../common/Price';
 import {displaySaleNumber} from '../../utils/numberUtil';
-import {BlankSpace} from '../common/Square';
+import {BlankSpace, RetangleGroup} from '../common/Square';
+import {TagIconListMap} from '../../common/interface';
 
 const {width} = Dimensions.get('window');
 
@@ -23,11 +24,13 @@ interface IItem {
   title: string;
   content?: string;
   price?: string;
+  discount?: string;
   saleNumber?: number;
   onPress?: (_?: any) => void;
   onLongPress?: (_?: any) => void;
   imageUri?: string;
   direction?: 'list' | 'warterfall';
+  tagList?: string[];
 }
 
 /**
@@ -42,6 +45,8 @@ export const Item: React.FC<IItem> = ({
   saleNumber,
   imageUri = '../../assets/default.png',
   direction,
+  tagList,
+  discount,
 }) => {
   const isDarkMode = useColorScheme() === 'dark';
   const isWaterfall = direction === 'warterfall';
@@ -103,6 +108,7 @@ export const Item: React.FC<IItem> = ({
       </View>
       <View style={rightStyle}>
         <CommodityTitle title={iTitle} content={iContent} />
+        <TagIconList tagList={tagList} discount={discount} />
         <View style={[styles.flexRowView, styles.paddingVertical]}>
           <DisplayPrice price={price} size="small" />
           <BlankSpace />
@@ -138,4 +144,36 @@ export const CommodityTitle: React.FC<{
       <Text style={contentStyle}>{content}</Text>
     </View>
   );
+};
+
+export const TagIconList: React.FC<{tagList?: string[]; discount?: string}> = ({
+  tagList,
+  discount,
+}) => {
+  const renderTag = () => {
+    if (tagList && tagList.length > 0) {
+      return (
+        <View style={styles.flexRowView}>
+          {tagList.map((tag, key) => {
+            const tagMap = TagIconListMap[tag] || {
+              color: Colors.green,
+              name: '推荐',
+            };
+            return (
+              <Badge
+                bgColor={tagMap.color}
+                outline={tagMap.outline}
+                key={key}
+                marginH={3}>
+                {tag === 'Discount'
+                  ? tagMap.name + (discount || '')
+                  : tagMap.name}
+              </Badge>
+            );
+          })}
+        </View>
+      );
+    }
+  };
+  return <View>{renderTag()}</View>;
 };

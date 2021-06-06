@@ -27,17 +27,19 @@ interface ISquare {
     size?: number;
   };
   onPress?: (_?: any) => void;
+  hidden?: boolean;
 }
 
 /**
  * 方形图标形状功能选择块——适用于九宫格
  */
-const Square: React.FC<ISquare> = ({name, descName, icon, onPress}) => {
+const Square: React.FC<ISquare> = ({name, descName, icon, onPress, hidden}) => {
   const isDarkMode = useColorScheme() === 'dark';
-  const borderStyle = {
+  const borderStyle: StyleProp<ViewStyle> = {
     minWidth: 90,
     maxWidth: 95,
     borderRadius: 8,
+    display: hidden ? 'none' : 'flex',
   };
   const viewStyle: StyleProp<ViewStyle> = {
     padding: 10,
@@ -145,7 +147,14 @@ const RetangleGroupLight: React.FC<{
   title?: string;
   bgColor?: string;
   color?: string;
-}> = ({title, color, bgColor, children}) => {
+  justifyContent?:
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly';
+}> = ({title, color, bgColor, justifyContent, children}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const viewStyle: StyleProp<ViewStyle> = {
     marginLeft: 14,
@@ -154,6 +163,7 @@ const RetangleGroupLight: React.FC<{
     flexDirection: 'column',
     backgroundColor: isDarkMode ? Colors.dark : bgColor || Colors.white,
     borderRadius: 8,
+    justifyContent: justifyContent || 'center',
   };
   return (
     <View style={viewStyle}>

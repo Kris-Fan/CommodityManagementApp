@@ -2,7 +2,11 @@
   package="com.awesometsproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 扫一扫使用 -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 读写权限，保存图片 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
       android:name=".MainApplication"

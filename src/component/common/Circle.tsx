@@ -8,7 +8,11 @@ import {
   TextStyle,
   ViewStyle,
 } from 'react-native';
-import {Colors} from '../../constant';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {OutlineGlyphMapType} from '@ant-design/icons-react-native/lib/index';
+import {Colors, Size} from '../../constant';
+import Icon from './Icon';
+import {basicStyle} from '../../constant/Style';
 
 const styles = StyleSheet.create({
   circle: {
@@ -47,9 +51,46 @@ const Circle: React.FC<{name: string; size?: number}> = ({name, size}) => {
     padding: 5,
   };
   return (
-    <View style={viewStyle}>
+    <TouchableOpacity style={viewStyle}>
       <Text style={textStyle}>{name}</Text>
-    </View>
+    </TouchableOpacity>
+  );
+};
+
+/**
+ * 半透明圆形按钮
+ */
+export const CircleButton: React.FC<{
+  iconName: OutlineGlyphMapType;
+  name?: string;
+  onPress?: (_?: any) => void;
+  size?: number;
+  color?: string;
+  bgColor?: string;
+}> = ({iconName, name, size, color, bgColor, onPress}) => {
+  const viewStyle: StyleProp<ViewStyle> = {
+    alignItems: 'center',
+    backgroundColor: bgColor || Colors.transparent2,
+    borderRadius: size || Size.iconSizeLight + 10,
+    paddingHorizontal: 4,
+    paddingVertical: 4,
+    marginHorizontal: 2,
+  };
+
+  const renderText = () => {
+    if (name) {
+      return <Text style={{color: color || Colors.white}}>{name}</Text>;
+    }
+  };
+  return (
+    <TouchableOpacity style={viewStyle} onPress={onPress}>
+      <Icon
+        name={iconName}
+        color={color || Colors.white}
+        size={size || Size.iconSizeLight}
+      />
+      {renderText()}
+    </TouchableOpacity>
   );
 };
 

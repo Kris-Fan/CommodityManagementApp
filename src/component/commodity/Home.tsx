@@ -106,6 +106,8 @@ const Home: React.FC<NavigationInjectedProps> = ({navigation}) => {
             onPress={() => navigation.navigate('CommodityDetail', {item})}
             imageUri={BaseUrl + ImageUrl + '/test.png'}
             direction={isWaterfall ? 'warterfall' : 'list'}
+            tagList={item.tagList}
+            discount={item.discount}
           />
         )}
         ListEmptyComponent={() => <Loading type={LoadingEnum.EMPTY} />}
@@ -268,7 +270,7 @@ const SearchFilter: React.FC<
   );
 };
 
-const FilterItem: React.FC<{
+export const FilterItem: React.FC<{
   name: string;
   textStyle?: StyleProp<TextStyle>;
   icon?: {name: OutlineGlyphMapType; color: string};

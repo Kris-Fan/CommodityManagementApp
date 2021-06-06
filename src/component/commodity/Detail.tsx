@@ -3,6 +3,8 @@ import {
   Image,
   ImageStyle,
   Linking,
+  PermissionsAndroid,
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -21,20 +23,30 @@ import {displaySaleNumber} from '../../utils/numberUtil';
 import {Button, GhostButton} from '../common/Button';
 import Icon from '../common/Icon';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {OutlineGlyphMapType} from '@ant-design/icons-react-native/lib/index';
 import Modal from '@ant-design/react-native/lib/modal';
 import Toast from '@ant-design/react-native/lib/toast';
-import {BlankLine, BlankSpace, RetangleGroup, Square} from '../common/Square';
+import {
+  BlankLine,
+  BlankSpace,
+  RetangleGroup,
+  RetangleGroupLight,
+  Square,
+} from '../common/Square';
 import {LabelLineLight, LabelLineTint} from '../common/LabelLine';
-import {CommodityTitle} from './Item';
+import {CommodityTitle, TagIconList} from './Item';
 import {APPScheme, ModalContentEnum, SourceFrom} from '../../common/enum';
+import QRCode from 'react-native-qrcode-svg';
+import {BarCodeArea} from './BarCode';
+import {CircleButton} from '../common/Circle';
+import CameraRoll from '@react-native-community/cameraroll';
+import {hasAndroidPermission} from '../../utils/checkPermission';
 
 /**
  * 商品详情页
  */
 const Detail: React.FC<NavigationInjectedProps> = ({navigation}) => {
   const isDarkMode = useColorScheme() === 'dark';
-  const {backgroundStyle, backgroundStyleLight, colorLight} = basicStyle(
+  const {backgroundStyle, backgroundStyleLight, color, colorLight} = basicStyle(
     isDarkMode,
   );
   const data: commodityItemType = navigation.getParam('item') || {};
@@ -58,7 +70,7 @@ const Detail: React.FC<NavigationInjectedProps> = ({navigation}) => {
   return (
     <SafeAreaView style={[styles.fullScreen, backgroundStyle]}>
       <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        barStyle={'light-content'}
         translucent
         backgroundColor={Colors.transparent2}
       />
@@ -104,16 +116,8 @@ const Detail: React.FC<NavigationInjectedProps> = ({navigation}) => {
             content={data.description}
             bold
           />
-          <RetangleGroup marginH={0} justifyContent="flex-start">
-            <Badge bgColor={Colors.coral}>超值低价</Badge>
-            <BlankSpace />
-            <Badge outline>60</Badge>
-            <Badge>6</Badge>
-            <BlankSpace />
-            <Badge outline>60</Badge>
-            <BlankSpace />
-            <Badge outline>超值低价</Badge>
-          </RetangleGroup>
+          <BlankSpace />
+          <TagIconList tagList={data.tagList} discount={data.discount} />
         </View>
         <BlankLine />
         <LabelLineTint
@@ -137,12 +141,16 @@ const Detail: React.FC<NavigationInjectedProps> = ({navigation}) => {
           <LabelLineLight title={data.comment} />
         </RetangleGroup>
         <BlankLine />
+        <BarCodeArea code={data.id} />
+
+        <BlankLine />
         <RetangleGroup title="源厂商" justifyContent="flex-start">
           <LabelLineLight
             icon={{fillName: 'shop', color: Colors.primaryLight}}
             title={data.factoryId}
           />
         </RetangleGroup>
+        <BlankLine height={100} />
       </ScrollView>
       <DetailBottom />
       {/*浮层 */}
@@ -189,10 +197,10 @@ const DetailTopBar: React.FC<
         styles.paddingVertical,
         viewStyle,
       ]}>
-      <FloatButton iconName="left" name="" onPress={navigation.goBack} />
+      <CircleButton iconName="left" name="" onPress={navigation.goBack} />
       <View style={styles.flexRowView}>
-        <FloatButton iconName="share-alt" name="" onPress={onPressShare} />
-        <FloatButton iconName="more" name="" onPress={onPressMore} />
+        <CircleButton iconName="share-alt" name="" onPress={onPressShare} />
+        <CircleButton iconName="more" name="" onPress={onPressMore} />
       </View>
     </View>
   );
@@ -245,39 +253,7 @@ const FavButton: React.FC<{light: boolean; onPress?: (_?: any) => void}> = ({
     <TouchableOpacity style={viewStyle} onPress={onPress}>
       <Icon fillName="heart" color={Colors.red} style={[favStyle, fillHeart]} />
       <Icon name="heart" color={colorLight.color} style={[favStyle, heart]} />
-      <Text style={[colorLight, heart]}>{light ? '已收藏' : '收藏'}</Text>
-    </TouchableOpacity>
-  );
-};
-
-/**
- * 半透明圆形按钮
- */
-const FloatButton: React.FC<{
-  iconName: OutlineGlyphMapType;
-  name?: string;
-  onPress?: (_?: any) => void;
-}> = ({iconName, name, onPress}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-  const {colorLight} = basicStyle(isDarkMode);
-  const viewStyle: StyleProp<ViewStyle> = {
-    alignItems: 'center',
-    backgroundColor: Colors.transparent2,
-    borderRadius: 40,
-    paddingHorizontal: 4,
-    paddingVertical: 4,
-    marginHorizontal: 2,
-  };
-
-  const renderText = () => {
-    if (name) {
-      return <Text style={colorLight}>{name}</Text>;
-    }
-  };
-  return (
-    <TouchableOpacity style={viewStyle} onPress={onPress}>
-      <Icon name={iconName} color={Colors.white} size={Size.iconSizeLight} />
-      {renderText()}
+      <Text style={colorLight}>{light ? '已收藏' : '收藏'}</Text>
     </TouchableOpacity>
   );
 };
@@ -287,9 +263,46 @@ const FloatButton: React.FC<{
  */
 const ShareModal: React.FC<{data: commodityItemType}> = ({data}) => {
   const isDarkMode = useColorScheme() === 'dark';
-  const {color} = basicStyle(isDarkMode);
+  const {color, colorLight} = basicStyle(isDarkMode);
   const datailUrl = `${BaseUrl}${GoodsDetail}/${data.id}?sourceFrom=${SourceFrom.RN}`;
   const failMessage = 'Open failed';
+
+  const saveQRCodePress = () => {
+    Modal.alert(
+      '是否保存此商品对应二维码',
+      <RetangleGroup>
+        <QRCode value={datailUrl} size={150} />
+        <Text style={colorLight}>{`${data.name} ${data.type}`}</Text>
+      </RetangleGroup>,
+      [
+        {
+          text: '取消',
+          style: 'cancel',
+        },
+        {text: '保存', onPress: () => saveORCode()},
+      ],
+    );
+  };
+  const saveORCode = () => {
+    if (Platform.OS === 'android') {
+      hasAndroidPermission(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      ).then(res => {
+        if (res) {
+          CameraRoll.getAlbums({assetType: 'Photos'}).then();
+          CameraRoll.save('../../assets/qrcode_bg.png', {type: 'photo'})
+            .then(() => {
+              Toast.success('已经保存到本地', 2);
+            })
+            .catch(err => {
+              Toast.fail('保存失败' + err, 2);
+            });
+        } else {
+          Toast.fail('请授予存储权限');
+        }
+      });
+    }
+  };
   return (
     <RetangleGroup justifyContent="flex-start" title="分享至" marginH={0}>
       <Square
@@ -308,6 +321,7 @@ const ShareModal: React.FC<{data: commodityItemType}> = ({data}) => {
               Toast.fail(failMessage + error, 2);
             });
         }}
+        hidden
       />
       <Square
         name="微博"
@@ -329,6 +343,7 @@ const ShareModal: React.FC<{data: commodityItemType}> = ({data}) => {
               Toast.fail(failMessage + error, 2);
             });
         }}
+        hidden
       />
       <Square
         name="QQ"
@@ -349,12 +364,13 @@ const ShareModal: React.FC<{data: commodityItemType}> = ({data}) => {
               Toast.fail(failMessage + error, 2);
             });
         }}
+        hidden
       />
       <Square
         name="二维码分享"
         descName="点击生成并保存到手机"
         icon={{name: 'qrcode', color: Colors.deepSky, needBg: true}}
-        onPress={() => {}}
+        onPress={saveQRCodePress}
       />
       <Square
         name="浏览器"
@@ -394,22 +410,36 @@ const MoreModal: React.FC<NavigationInjectedProps & React.RefObject<Modal>> = ({
     <RetangleGroup justifyContent="flex-start" title="更多" marginH={0}>
       <Square
         name="编辑"
-        icon={{name: 'edit', needBg: true}}
+        icon={{fillName: 'edit', needBg: true}}
         onPress={() => {}}
       />
       <Square
         name="下线商品"
-        icon={{name: 'eye-invisible', color: Colors.sand, needBg: true}}
+        icon={{fillName: 'eye-invisible', color: Colors.sand, needBg: true}}
         onPress={() => {}}
       />
       <Square
         name="删除商品"
-        icon={{name: 'delete', color: Colors.watermelon, needBg: true}}
+        icon={{fillName: 'delete', color: Colors.watermelon, needBg: true}}
         onPress={() => {}}
       />
-      <Square
+      {/* <Square
         name="关闭本页"
         icon={{name: 'close-circle', color: Colors.grisaillf, needBg: true}}
+        onPress={() => {
+          if (onClose) {
+            onClose();
+          }
+          navigation.goBack();
+        }}
+      /> */}
+      <Square
+        name="帮助"
+        icon={{
+          name: 'question-circle',
+          color: Colors.primaryLight,
+          needBg: true,
+        }}
         onPress={() => {
           if (onClose) {
             onClose();
@@ -441,6 +471,7 @@ const ExchangeTypeModal: React.FC<{data: commodityItemType}> = ({data}) => {
     </View>
   );
 };
+
 const commodityImage: StyleProp<ImageStyle> = {
   backgroundColor: Colors.grisaillf,
   height: 300,

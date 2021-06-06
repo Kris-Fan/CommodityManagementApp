@@ -132,6 +132,7 @@ const COMMODITY_DATA: {
       // purchasePrice: 666,
       fixedPrice: 888,
       sellPrice: 888,
+      discount: '1',
       // 库存数
       number: 1001,
       sellNumber: 1,
@@ -139,6 +140,7 @@ const COMMODITY_DATA: {
       comment: '无',
       factoryId: '607173aed05891adfe7baf85',
       status: 1,
+      tagList: ['NewProduct'],
     },
     {
       id: '2',
@@ -152,6 +154,7 @@ const COMMODITY_DATA: {
       // purchasePrice: 666,
       fixedPrice: 888,
       sellPrice: 666,
+      discount: '7.5',
       // 库存数
       number: 1001,
       sellNumber: 100,
@@ -159,6 +162,7 @@ const COMMODITY_DATA: {
       comment: '无',
       factoryId: '607173aed05891adfe7baf85',
       status: 1,
+      tagList: ['NewProduct', 'LowPrice', 'Discount', 'SuperDiscount'],
     },
     {
       id: '3',
@@ -171,6 +175,7 @@ const COMMODITY_DATA: {
       // purchasePrice: 666,
       fixedPrice: 888,
       sellPrice: 888,
+      discount: '1',
       // 库存数
       number: 1001,
       sellNumber: 10000,
@@ -180,7 +185,7 @@ const COMMODITY_DATA: {
       status: 1,
     },
     {
-      id: '4',
+      id: '',
       name: '测试产品3',
       type: 'ZHN0007',
       category: 'string',
@@ -190,6 +195,7 @@ const COMMODITY_DATA: {
       // purchasePrice: 666,
       fixedPrice: 888,
       sellPrice: 999,
+      discount: '1',
       // 库存数
       number: 1001,
       sellNumber: 1,
@@ -197,9 +203,10 @@ const COMMODITY_DATA: {
       comment: '无',
       factoryId: '607173aed05891adfe7baf85',
       status: 1,
+      tagList: ['OldProduct'],
     },
     {
-      id: '5',
+      id: '607173aed05891ad',
       name: '测试产品3',
       type: 'ZHN0007',
       category: 'string',
@@ -209,6 +216,7 @@ const COMMODITY_DATA: {
       // purchasePrice: 666,
       fixedPrice: 888,
       sellPrice: 888,
+      discount: '1',
       // 库存数
       number: 1001,
       sellNumber: 1,
@@ -228,6 +236,7 @@ const COMMODITY_DATA: {
       // purchasePrice: 666,
       fixedPrice: 888,
       sellPrice: 888,
+      discount: '1',
       // 库存数
       number: 1001,
       sellNumber: 1,

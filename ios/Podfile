@@ -16,6 +16,12 @@ target 'AwesomeTSProject' do
 
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+  pod 'ReactNativeART', :path => '../node_modules/@react-native-community/art'
+
+  pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
+
   target 'AwesomeTSProjectTests' do
     inherit! :complete
     # Pods for testing

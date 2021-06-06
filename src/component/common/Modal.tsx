@@ -1,10 +1,18 @@
 import React, {useState} from 'react';
-import {Text, View, StyleProp, TextStyle} from 'react-native';
+import {
+  Text,
+  View,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+  useColorScheme,
+} from 'react-native';
 import Modal from '@ant-design/react-native/lib/modal';
 import Icon from '@ant-design/react-native/lib/icon';
 import {Button} from './Button';
 import {Colors, Size} from '../../constant';
-import {Style as styles} from '../../constant/Style';
+import {basicStyle, Style as styles} from '../../constant/Style';
+import {CircleButton} from './Circle';
 
 const titleStyle: StyleProp<TextStyle> = {
   fontSize: Size.normal,
@@ -60,6 +68,36 @@ const ModalPop: React.FC<{visible: boolean}> = ({visible, children}) => {
           <Button name="primary" onPress={onClose} />
         </View>
       </Modal>
+    </View>
+  );
+};
+
+export const ModalCard: React.FC<{visible?: boolean}> = ({
+  visible,
+  children,
+}) => {
+  const isDarkMode = useColorScheme() === 'dark';
+  const {backgroundStyleLight, backgroundStyle, colorLight} = basicStyle(
+    isDarkMode,
+  );
+  console.log(visible);
+  const [iVisible, setVisiable] = useState(true);
+  const onClose = () => setVisiable(false);
+  const containerView: StyleProp<ViewStyle> = {
+    ...styles.transBackground,
+    alignItems: 'center',
+  };
+  console.log('iVisible', iVisible);
+  return (
+    <View style={[containerView, {display: iVisible ? 'flex' : 'none'}]}>
+      <View style={[styles.modalViewStyle, backgroundStyle]}>
+        {children}
+        <Button name="primary" onPress={onClose} />
+      </View>
+      <View style={[{alignItems: 'center'}, styles.paddingVertical]}>
+        <CircleButton iconName="close" size={Size.iconSize} onPress={onClose} />
+        <Text style={colorLight}>关闭</Text>
+      </View>
     </View>
   );
 };

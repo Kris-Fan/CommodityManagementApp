@@ -9,6 +9,16 @@ export const displayPrice = (price: number | string): string => {
   return String(Math.round(Number(price) * 100) / 100);
 };
 
+export const calDiscount = (
+  originPrice: number | string,
+  truePrice: number | string,
+) => {
+  if (isNaN(Number(originPrice)) && isNaN(Number(truePrice))) {
+    return 'Invaild Price';
+  }
+  return ((Number(truePrice) / Number(truePrice)) * 10).toFixed(1);
+};
+
 export const displaySaleNumber = (num: number | undefined): string => {
   if (!num) {
     return '0';

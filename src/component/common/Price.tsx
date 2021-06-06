@@ -103,11 +103,13 @@ export const Badge: React.FC<{
   bgColor?: string;
   outline?: boolean;
   onPress?: (_?: any) => {};
-}> = ({children, color, bgColor, outline, onPress}) => {
+  marginH?: number;
+}> = ({children, color, bgColor, outline, marginH, onPress}) => {
   const viewStyle = {
     backgroundColor: outline ? Colors.transparent : bgColor || Colors.primary,
     borderWidth: outline ? 1 : 0,
     borderColor: bgColor || Colors.primary,
+    marginHorizontal: marginH || 0,
   };
   return (
     <TouchableOpacity

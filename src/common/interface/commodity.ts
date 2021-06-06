@@ -1,5 +1,6 @@
 export interface commodityItemType {
   id: string;
+  // 每个商品对应一个唯一名字，具体以type区分
   name: string;
   // 型号
   type: string;
@@ -14,6 +15,8 @@ export interface commodityItemType {
   fixedPrice: number;
   // 售价
   sellPrice: number;
+  // 折扣
+  discount: string;
   // 库存数
   number?: number;
   // 销售数
@@ -25,4 +28,8 @@ export interface commodityItemType {
   factoryId: string;
   // 商品状态
   status: 1;
+  // 标签Icon--可用于筛选的
+  tagList?: string[];
+  // 子项，不同type到商品
+  subChoice?: commodityItemType[];
 }

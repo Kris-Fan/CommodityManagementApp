@@ -4,6 +4,7 @@ import {Colors} from '../../constant';
 import {Square, BlankLine} from '../common/Square';
 import {NavigationInjectedProps} from 'react-navigation';
 import {Style as styles} from '../../constant/Style';
+import {ScanTypeEnum} from '../../common/enum';
 
 /**
  * 首页-浮层功能区
@@ -30,14 +31,26 @@ export const MoreDetail: React.FC<
           }}
         />
         <Square
-          name="扫一扫添加商品"
-          icon={{name: 'scan', color: Colors.greenLight, needBg: true}}
-          onPress={() => {}}
-        />
-        <Square
           name="扫一扫查找商品"
           icon={{name: 'security-scan', color: Colors.greenLight, needBg: true}}
-          onPress={() => {}}
+          onPress={() => {
+            if (onClose) {
+              onClose();
+            }
+            navigation.navigate('ScanQRCode', {type: ScanTypeEnum.SEARCH});
+          }}
+        />
+        <Square
+          name="扫一扫新增商品"
+          icon={{name: 'scan', color: Colors.greenLight, needBg: true}}
+          onPress={() => {
+            if (onClose) {
+              onClose();
+            }
+            navigation.navigate('ScanQRCode', {
+              type: ScanTypeEnum.ADD_NEW_COMMIDITY,
+            });
+          }}
         />
         <Square name="" />
       </View>
