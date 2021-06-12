@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.awesometsproject">
+  package="com.commoditymanagement">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 扫一扫使用 -->

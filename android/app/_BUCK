@@ -35,12 +35,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.awesometsproject",
+    package = "com.commoditymanagement",
 )
 
 android_resource(
     name = "res",
-    package = "com.awesometsproject",
+    package = "com.commoditymanagement",
     res = "src/main/res",
 )
 
