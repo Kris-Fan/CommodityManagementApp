@@ -24,12 +24,14 @@ interface IItem {
   title: string;
   content?: string;
   price?: string;
+  originPrice?: string;
   discount?: string;
   saleNumber?: number;
   onPress?: (_?: any) => void;
   onLongPress?: (_?: any) => void;
   imageUri?: string;
-  direction?: 'list' | 'warterfall';
+  // 排列方式
+  direction?: 'list' | 'warterfall' | 'min';
   tagList?: string[];
 }
 
@@ -42,6 +44,7 @@ export const Item: React.FC<IItem> = ({
   title,
   content,
   price,
+  originPrice,
   saleNumber,
   imageUri = '../../assets/default.png',
   direction,
@@ -49,7 +52,11 @@ export const Item: React.FC<IItem> = ({
   discount,
 }) => {
   const isDarkMode = useColorScheme() === 'dark';
+  // 瀑布流
   const isWaterfall = direction === 'warterfall';
+  // 小图模式
+  const isMin = direction === 'min';
+  const normalHeight = styles.commodityItemHeight.height / (isMin ? 2 : 1);
   const {backgroundStyle, backgroundStyleLight} = basicStyle(isDarkMode);
   const leftStyle = {
     flex: isWaterfall ? 1 : 2,
@@ -59,14 +66,12 @@ export const Item: React.FC<IItem> = ({
     marginLeft: isWaterfall ? 0 : 10,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    height: isWaterfall ? 'auto' : styles.commodityItemHeight.height,
+    minHeight: isWaterfall ? 'auto' : normalHeight,
     width: isWaterfall ? width / 2 - 40 : 'auto',
   };
   const commodityImage: StyleProp<ImageStyle> = {
     ...styles.commonBorderRadius,
-    height: isWaterfall
-      ? styles.commodityItemHeight.height * 1.4
-      : styles.commodityItemHeight.height,
+    minHeight: isWaterfall ? normalHeight * 1.4 : normalHeight,
     width: isWaterfall ? width / 2 - 14 : '100%',
     ...backgroundStyle,
   };
@@ -75,6 +80,7 @@ export const Item: React.FC<IItem> = ({
     styles.paddingVertical,
     styles.paddingHorizontal,
     backgroundStyleLight,
+    isMin ? styles.btmLine : {},
   ];
   if (isWaterfall) {
     containerViewStyle.push({flexDirection: 'column', flex: 3});
@@ -85,15 +91,21 @@ export const Item: React.FC<IItem> = ({
       paddingHorizontal: 1,
     });
   }
-  const maxTextLength = isWaterfall ? 13 : 50;
+  const maxTextLength = isWaterfall ? 13 : 50 / (isMin ? 2.5 : 1);
+  const maxSubTextLength = isWaterfall ? 13 : 50;
   const iTitle =
     title.length > maxTextLength - 5
       ? title.slice(0, maxTextLength - 4) + '...'
       : title;
   const iContent =
-    content && content?.length > maxTextLength
-      ? content.slice(0, maxTextLength - 3) + '...'
+    content && content?.length > maxSubTextLength
+      ? content.slice(0, maxSubTextLength - 3) + '...'
       : content;
+  const renderTagNumber = () => {
+    if (saleNumber) {
+      return <TagNumber tag="销量:" number={displaySaleNumber(saleNumber)} />;
+    }
+  };
   return (
     <TouchableOpacity
       style={containerViewStyle}
@@ -108,11 +120,15 @@ export const Item: React.FC<IItem> = ({
       </View>
       <View style={rightStyle}>
         <CommodityTitle title={iTitle} content={iContent} />
-        <TagIconList tagList={tagList} discount={discount} />
+        <TagIconList
+          tagList={tagList}
+          discount={discount}
+          size={isMin ? Size.smaller : Size.small}
+        />
         <View style={[styles.flexRowView, styles.paddingVertical]}>
-          <DisplayPrice price={price} size="small" />
+          <DisplayPrice price={price} size="small" originPrice={originPrice} />
           <BlankSpace />
-          <TagNumber tag="销量:" number={displaySaleNumber(saleNumber)} />
+          {renderTagNumber()}
         </View>
       </View>
     </TouchableOpacity>
@@ -146,14 +162,15 @@ export const CommodityTitle: React.FC<{
   );
 };
 
-export const TagIconList: React.FC<{tagList?: string[]; discount?: string}> = ({
-  tagList,
-  discount,
-}) => {
+export const TagIconList: React.FC<{
+  tagList?: string[];
+  discount?: string;
+  size?: number;
+}> = ({tagList, discount, size}) => {
   const renderTag = () => {
     if (tagList && tagList.length > 0) {
       return (
-        <View style={styles.flexRowView}>
+        <View style={styles.flexRowWrap}>
           {tagList.map((tag, key) => {
             const tagMap = TagIconListMap[tag] || {
               color: Colors.green,
@@ -164,7 +181,8 @@ export const TagIconList: React.FC<{tagList?: string[]; discount?: string}> = ({
                 bgColor={tagMap.color}
                 outline={tagMap.outline}
                 key={key}
-                marginH={3}>
+                marginH={3}
+                size={size}>
                 {tag === 'Discount'
                   ? tagMap.name + (discount || '')
                   : tagMap.name}

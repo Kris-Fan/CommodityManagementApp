@@ -84,17 +84,18 @@ export const ScanQRCode: React.FC<NavigationInjectedProps> = ({navigation}) => {
   const onBarCodeRead = (result: BarCodeReadEvent) => {
     const {data} = result; //只要拿到data就可以了
     if (data !== transCode || lastScanType !== scanType) {
+      // TODO 扫码后的操作：
       // 避免重复操作,当切换tab时仍可重复操作
       setTransCode(data);
       setLastScanType(scanType);
-      //扫码后的操作
     }
   };
   const onPressBottomBar = (iType: ScanTypeEnum) => {
     setScanType(iType);
   };
-  const scanTips = scanType === ScanTypeEnum.SEARCH ? "二维码/条形码" : "条形码"
-  const height = scanType === ScanTypeEnum.SEARCH ? 200 : 150
+  const scanTips =
+    scanType === ScanTypeEnum.SEARCH ? '二维码/条形码' : '条形码';
+  const height = scanType === ScanTypeEnum.SEARCH ? 200 : 150;
   const rnCamera = useRef<RNCamera>(null);
   return (
     <SafeAreaView style={styles.container}>

@@ -28,6 +28,8 @@ interface INavHeader {
     NavigationParams
   >;
   percent?: number;
+  // 覆盖默认的goBack推出堆栈操作
+  goBack?: (_?: any) => void;
 }
 
 interface ISearchHeader extends ISearchBar {
@@ -42,6 +44,7 @@ const NavHeader: React.FC<INavHeader> = ({
   children,
   navigation,
   percent,
+  goBack,
 }) => {
   const isDarkMode = useColorScheme() === 'dark';
   const headStyle: StyleProp<ViewStyle> = {
@@ -68,7 +71,14 @@ const NavHeader: React.FC<INavHeader> = ({
   return (
     <View>
       <View style={headStyle}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          onPress={() => {
+            if (goBack) {
+              goBack();
+            } else {
+              navigation.goBack();
+            }
+          }}>
           <Icon name="arrow-left" style={iconStyle} />
         </TouchableOpacity>
         <Flex>

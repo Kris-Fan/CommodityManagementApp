@@ -1,5 +1,7 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {Size, Colors} from './';
+
+const {width, height} = Dimensions.get('window');
 
 export const Style = StyleSheet.create({
   paddingHorizontal: {
@@ -79,13 +81,24 @@ export const Style = StyleSheet.create({
      */
     borderRadius: 8,
   },
-  modalViewStyle: {
+  modalViewStyleAutoHeight: {
     paddingVertical: 20,
     paddingHorizontal: 20,
     borderRadius: 12,
   },
+  modalViewStyle: {
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    maxHeight: height * 0.9,
+  },
   flexRowView: {
     flexDirection: 'row',
+    alignItems: 'center',
+  },
+  flexRowWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
   },
   lightTitle: {

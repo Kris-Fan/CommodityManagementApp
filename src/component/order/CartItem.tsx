@@ -1,32 +1,35 @@
 import React from 'react';
-import {
-  Text,
-  useColorScheme,
-  View,
-  StyleProp,
-  TextStyle,
-  ViewStyle,
-  TouchableOpacity,
-} from 'react-native';
-import Flex from '@ant-design/react-native/lib/flex';
+import {useColorScheme, View, StyleProp, ViewStyle} from 'react-native';
 import Stepper from '@ant-design/react-native/lib/stepper';
-import List from '@ant-design/react-native/lib/list';
-import {Colors, Size} from '../../constant';
 import {Style as styles, basicStyle} from '../../constant/Style';
-import {iSymbols} from '../../constant/const';
-import {Square} from '../common/Square';
 import {LabelLineLight} from '../common/LabelLine';
+import {Item as CommodityItem} from '../commodity/Item';
+import {TagIconEnum} from '../../common/interface';
 
 /**
  * 购物车产品项目
  */
 export const CartItem: React.FC<{
   title: string;
+  content?: string;
   price: string;
   fixedPrice?: string;
+  tagList?: string[];
+  imageUri?: string;
   onPress?: (_?: any) => void;
   onLongPress?: (_?: any) => void;
-}> = ({title, price, fixedPrice, children, onPress, onLongPress}) => {
+  chooseCoupons?: (_?: any) => void;
+}> = ({
+  title,
+  price,
+  fixedPrice,
+  content,
+  tagList,
+  imageUri,
+  onPress,
+  onLongPress,
+  chooseCoupons,
+}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const {backgroundStyleLight, color, colorLight} = basicStyle(isDarkMode);
   const itemStyle: StyleProp<ViewStyle> = {
@@ -35,78 +38,49 @@ export const CartItem: React.FC<{
     ...backgroundStyleLight,
     ...styles.commonBorderRadius,
   };
-  const titleStyle: StyleProp<TextStyle> = {
-    ...styles.sectionTitle,
-    fontSize: Size.normal,
-    ...color,
-  };
-  const contentStyle: StyleProp<TextStyle> = {
-    ...styles.sectionDescription,
-    ...colorLight,
-    fontSize: Size.small,
-    marginTop: 1,
-    paddingBottom: 5,
-  };
-  const leftStyle = {
-    flex: 1,
-    marginRight: 20,
-  };
-  const rightStyle = {
-    flex: 6,
-  };
-  const priceStyle = {
-    fontSize: Size.normal,
-    color: Colors.primaryActive,
-    marginRight: Size.normal,
-  };
-  const normalTextStyle = {
-    fontSize: Size.small,
-    ...colorLight,
+  // 根据实际情况渲染可用优惠券选项
+  const renderAvailableCoupons = () => {
+    const isSaleLoss = tagList?.includes(TagIconEnum.LossSale);
+    const isSupperDiscount = tagList?.includes(TagIconEnum.SuperDiscount);
+    if (+price < 6 || isSaleLoss || isSupperDiscount) {
+      return;
+    }
+    return (
+      <LabelLineLight
+        title="优惠金额："
+        rightIcon
+        rightDesc="666"
+        onPress={chooseCoupons}
+      />
+    );
   };
   return (
     <View style={itemStyle}>
-      <Flex justify="start" wrap="nowrap">
-        <TouchableOpacity
-          style={leftStyle}
-          onPress={onPress}
-          onLongPress={onLongPress}>
-          <Square icon={{name: 'appstore'}} name="" />
-        </TouchableOpacity>
-        <View style={rightStyle}>
-          <View>
-            <Text style={titleStyle}>{title}</Text>
-            <Text style={contentStyle}>{children}</Text>
-          </View>
-          <TouchableOpacity style={styles.flexRowView}>
-            <Text style={priceStyle}>
-              {price}
-              {iSymbols.YUAN}
-            </Text>
-            <Text style={colorLight}>
-              {fixedPrice}
-              {iSymbols.YUAN}
-            </Text>
-          </TouchableOpacity>
+      <CommodityItem
+        title={title}
+        content={content}
+        price={price}
+        originPrice={fixedPrice}
+        imageUri={imageUri}
+        tagList={tagList}
+        onPress={onPress}
+        onLongPress={onLongPress}
+        direction={'min'}
+      />
+      <LabelLineLight title="购买数量：" paddingH={14}>
+        <View style={[{width: 150}]}>
+          <Stepper
+            key="1"
+            max={999}
+            min={1}
+            readOnly={false}
+            defaultValue={1}
+            onChange={onChange}
+            inputStyle={color}
+          />
         </View>
-      </Flex>
-      <List style={[backgroundStyleLight]}>
-        <List.Item
-          style={backgroundStyleLight}
-          extra={
-            <Stepper
-              key="1"
-              max={999}
-              min={1}
-              readOnly={false}
-              defaultValue={1}
-              onChange={onChange}
-              inputStyle={color}
-            />
-          }>
-          <Text style={normalTextStyle}>购买数量：</Text>
-        </List.Item>
-      </List>
-      <LabelLineLight title="优惠金额：" rightIcon rightDesc="666" />
+      </LabelLineLight>
+      {renderAvailableCoupons()}
     </View>
   );
 };

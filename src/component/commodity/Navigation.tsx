@@ -2,7 +2,7 @@ import React from 'react';
 
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {Colors, Size} from '../../constant';
-import Add from './Add';
+import More from './More';
 import Status from './Status';
 import Home from './Home';
 import {Platform} from 'react-native';
@@ -37,28 +37,6 @@ const CommodityNavigator = createMaterialTopTabNavigator(
         },
       },
     },
-    CommodityAdd: {
-      screen: Add,
-      navigationOptions: {
-        tabBarLabel: '添加商品',
-        tabBarIcon: ({tintColor}) => {
-          if (tintColor === Colors.primary) {
-            return (
-              <Icon
-                fillName={'plus-circle'}
-                style={{fontSize: 30, color: tintColor}}
-              />
-            );
-          }
-          return (
-            <Icon
-              name={'appstore-add'}
-              style={{fontSize: Size.iconSize, color: tintColor}}
-            />
-          );
-        },
-      },
-    },
     CommodityStatus: {
       screen: Status,
       navigationOptions: {
@@ -75,6 +53,28 @@ const CommodityNavigator = createMaterialTopTabNavigator(
           return (
             <Icon
               name={'block'}
+              style={{fontSize: Size.iconSize, color: tintColor}}
+            />
+          );
+        },
+      },
+    },
+    CommodityMore: {
+      screen: More,
+      navigationOptions: {
+        tabBarLabel: '更多',
+        tabBarIcon: ({tintColor}) => {
+          if (tintColor === Colors.primary) {
+            return (
+              <Icon
+                fillName={'appstore'}
+                style={{fontSize: 30, color: tintColor}}
+              />
+            );
+          }
+          return (
+            <Icon
+              name={'appstore-add'}
               style={{fontSize: Size.iconSize, color: tintColor}}
             />
           );

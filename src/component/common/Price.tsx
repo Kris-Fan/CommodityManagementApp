@@ -104,7 +104,8 @@ export const Badge: React.FC<{
   outline?: boolean;
   onPress?: (_?: any) => {};
   marginH?: number;
-}> = ({children, color, bgColor, outline, marginH, onPress}) => {
+  size?: number;
+}> = ({children, color, bgColor, outline, marginH, size, onPress}) => {
   const viewStyle = {
     backgroundColor: outline ? Colors.transparent : bgColor || Colors.primary,
     borderWidth: outline ? 1 : 0,
@@ -119,7 +120,7 @@ export const Badge: React.FC<{
       <Text
         style={{
           color: outline ? bgColor || Colors.primary : color || Colors.white,
-          fontSize: Size.small,
+          fontSize: size || Size.small,
         }}>
         {children}
       </Text>

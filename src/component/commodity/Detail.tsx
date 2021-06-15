@@ -163,7 +163,7 @@ const Detail: React.FC<NavigationInjectedProps> = ({navigation}) => {
         maskClosable
         style={styles.transBackground}
         ref={modalRef}>
-        <View style={[backgroundStyleLight, styles.modalViewStyle]}>
+        <View style={[backgroundStyleLight, styles.modalViewStyleAutoHeight]}>
           {renderModal()}
           <BlankLine />
           <GhostButton name="关闭" onPress={onClose} />

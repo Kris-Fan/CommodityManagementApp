@@ -5,11 +5,12 @@ import {
   TouchableOpacity,
   View,
   StatusBar,
+  BackHandler,
 } from 'react-native';
 import {WebView} from 'react-native-webview';
 import {NavHeader} from '../common/Header';
 import {Colors, BaseUrl, Size} from '../../constant';
-import {Style as styles} from '../../constant/Style';
+import {basicStyle, Style as styles} from '../../constant/Style';
 import {NavigationInjectedProps} from 'react-navigation';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from '../common/Icon';
@@ -21,15 +22,17 @@ import {Loading, LoadingEnum} from './Loading';
 // Dimensions 用于获取设备宽、高、分辨率
 const {height} = Dimensions.get('window');
 
+export interface IWebViewParam {
+  baseUrl?: string;
+  url: string;
+  title?: string;
+}
+
 const MyWebView: React.FC<NavigationInjectedProps> = ({navigation}) => {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-  const color = {
-    color: isDarkMode ? Colors.gray : Colors.darker,
-  };
+  const {backgroundStyle, color, colorLight} = basicStyle(isDarkMode);
+
   const containerStyle = {
     ...backgroundStyle,
     height,
@@ -39,26 +42,41 @@ const MyWebView: React.FC<NavigationInjectedProps> = ({navigation}) => {
     fontSize: Size.iconSize,
   };
   const [visible, setVisible] = useState(false);
+  const [iCanGoBack, setICanGoBack] = useState(false);
+  const [iCanGoForward, setICanGoForward] = useState(false);
   const onPressShowModal = () => setVisible(true);
   const onClose = () => setVisible(false);
   const [percent, setPercent] = useState(1);
   const webViewRef = useRef<WebView>(null);
+  const iData: IWebViewParam = {
+    baseUrl: navigation.getParam('baseUrl') || BaseUrl,
+    url: navigation.getParam('url'),
+    title: navigation.getParam('title'),
+  };
   return (
     <SafeAreaView style={containerStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         translucent
       />
-      <NavHeader navigation={navigation} percent={percent}>
+      <NavHeader
+        navigation={navigation}
+        percent={percent}
+        title={iData.title}
+        goBack={() => {
+          if (iCanGoBack) {
+            webViewRef.current?.goBack();
+          } else {
+            navigation.goBack();
+          }
+        }}>
         <TouchableOpacity onPress={onPressShowModal}>
           <Icon name="ellipsis" style={moreIconStyle} />
         </TouchableOpacity>
       </NavHeader>
       <WebView
         source={{
-          uri: `${
-            navigation.getParam('baseUrl') || BaseUrl
-          }${navigation.getParam('url')}`,
+          uri: `${iData.baseUrl}${iData.url}`,
         }}
         originWhitelist={['*']}
         javaScriptEnabled={true}
@@ -76,6 +94,11 @@ const MyWebView: React.FC<NavigationInjectedProps> = ({navigation}) => {
           setPercent(nativeEvent.progress * 100)
         }
         ref={webViewRef}
+        onNavigationStateChange={({canGoBack, canGoForward}) => {
+          // 如果可以回退就使用 webview.goBack() ; 如果不能回退就执行 navigator 的出栈操作
+          setICanGoBack(canGoBack);
+          setICanGoForward(canGoForward);
+        }}
       />
       <Modal
         popup
@@ -102,6 +125,15 @@ const MyWebView: React.FC<NavigationInjectedProps> = ({navigation}) => {
                 onClose();
                 navigation.goBack();
               }}
+            />
+            <Square
+              name="前进"
+              icon={{name: 'forward', color: colorLight.color, needBg: true}}
+              onPress={() => {
+                onClose();
+                webViewRef.current?.goForward();
+              }}
+              hidden={!iCanGoForward}
             />
           </View>
           <BlankLine />

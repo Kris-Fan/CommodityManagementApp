@@ -36,6 +36,8 @@ interface LabelLineBase {
   };
   rightIcon?: boolean; // 右侧箭头
   rightDesc?: string; // 右侧描述
+  disabled?: boolean;
+  paddingH?: number;
   onPress?: (_?: any) => void;
   onLongPress?: (_?: any) => void;
 }
@@ -55,6 +57,7 @@ const LabelLine: React.FC<
   rightIcon,
   rightDesc,
   noUnderLine,
+  paddingH,
   onPress,
   onLongPress,
 }) => {
@@ -64,7 +67,7 @@ const LabelLine: React.FC<
   const viewStyle = {
     paddingTop: 8,
     backgroundColor: isDarkMode ? Colors.dark : Colors.white,
-    paddingHorizontal: rightIcon ? 24 : 0,
+    paddingHorizontal: rightIcon ? 24 : paddingH || 0,
   };
   const titleStyle = {
     fontSize: Size.normal,
@@ -156,6 +159,8 @@ const LabelLineLight: React.FC<
   icon,
   rightIcon,
   rightDesc,
+  disabled,
+  paddingH,
   onPress,
   onLongPress,
   children,
@@ -167,16 +172,10 @@ const LabelLineLight: React.FC<
   const viewStyle = {
     backgroundColor:
       color?.bgColor || (isDarkMode ? Colors.dark : Colors.white),
-    paddingHorizontal: rightIcon ? 14 : 6,
+    paddingHorizontal: rightIcon ? 14 : paddingH || 6,
   };
   const titleStyle = {
     color: color?.titleColor || Colors.grisaillf,
-  };
-  const textViewStyle: StyleProp<ViewStyle> = {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottomColor: isDarkMode ? Colors.darker : Colors.light,
   };
   const iconStyle = {
     fontSize: icon?.size || Size.iconSize,
@@ -197,13 +196,14 @@ const LabelLineLight: React.FC<
     <TouchableOpacity
       style={viewStyle}
       onPress={onPress}
-      onLongPress={onLongPress}>
+      onLongPress={onLongPress}
+      disabled={disabled}>
       <Flex justify="between">
         {renderLeftFlex(needIcon, iconStyle, needTitle, titleStyle)}
-        <View style={textViewStyle}>
+        <Flex justify="end">
           {children}
           {renderRightView()}
-        </View>
+        </Flex>
       </Flex>
     </TouchableOpacity>
   );
@@ -258,6 +258,7 @@ export const LabelLineTint: React.FC<{
   onLongPress?: (_?: any) => void;
   style?: {color?: string; tintColor?: string; bgColor?: string};
   rightIcon?: boolean;
+  marginH?: number;
 }> = ({
   title,
   name,
@@ -267,13 +268,15 @@ export const LabelLineTint: React.FC<{
   style,
   iconName,
   rightIcon,
+  marginH,
 }) => {
   return (
     <View>
       <RetangleGroupLight
         title={title}
         bgColor={style?.bgColor || Colors.primary}
-        color={style?.color || Colors.light}>
+        color={style?.color || Colors.light}
+        marginH={marginH}>
         <LabelLineLight
           title={name}
           icon={{name: iconName, color: style?.tintColor || Colors.white}}

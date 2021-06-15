@@ -13,9 +13,9 @@ import {LabelLineTint} from '../common/LabelLine';
 import {BlankLine, RetangleGroupLight} from '../common/Square';
 
 /**
- * 更多页面
+ * 新增商品页面
  */
-const More: React.FC<NavigationInjectedProps> = ({navigation}) => {
+const Add: React.FC<NavigationInjectedProps> = ({navigation}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const {backgroundStyle, backgroundStyleLight, color, colorLight} = basicStyle(
     isDarkMode,
@@ -23,14 +23,19 @@ const More: React.FC<NavigationInjectedProps> = ({navigation}) => {
 
   return (
     <SafeAreaView style={[styles.fullScreen, backgroundStyle]}>
-      <HeaderName title="" bgColor={backgroundStyleLight.backgroundColor} />
+      <HeaderName title="" bgColor={Colors.primary} />
       <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        barStyle="light-content"
         translucent
         backgroundColor={Colors.transparent}
       />
-      <NavHeader navigation={navigation} title="添加商品" />
       <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <HeaderName
+          title="更多"
+          color={Colors.white}
+          bgColor={Colors.primary}
+          descBottpm="管理商品"
+        />
         <BlankLine />
         <LabelLineTint
           title="通过进货单添加-适用于已录入的商品"
@@ -76,4 +81,4 @@ const More: React.FC<NavigationInjectedProps> = ({navigation}) => {
   );
 };
 
-export default More;
+export default Add;

@@ -183,6 +183,7 @@ const COMMODITY_DATA: {
       comment: '无',
       factoryId: '607173aed05891adfe7baf85',
       status: 1,
+      tagList: ['NewProduct', 'LowPrice', 'Discount', 'LossSale'],
     },
     {
       id: '',

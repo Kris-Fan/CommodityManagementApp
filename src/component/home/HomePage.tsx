@@ -93,6 +93,7 @@ const HomePage: React.FC<NavigationInjectedProps> = ({navigation}) => {
             onPress={() =>
               navigation.navigate('MyWebView', {
                 url: StaticsCustomerUrl + '/404',
+                title: '客户分析',
               })
             }
           />

@@ -18,7 +18,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {AnimatedValue} from 'react-navigation';
 import {Button} from '../common/Button';
 
-const {height} = Dimensions.get('window');
+const {height: wHeight} = Dimensions.get('window');
 
 export enum LoadingEnum {
   // 正在加载中
@@ -60,11 +60,18 @@ interface ILoading {
     name: string;
     onPress: (_?: any) => void;
   };
+  height?: number;
 }
 /**
  * 加载中
  */
-export const Loading: React.FC<ILoading> = ({type, icon, text, button}) => {
+export const Loading: React.FC<ILoading> = ({
+  type,
+  icon,
+  text,
+  button,
+  height,
+}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lightBg,
@@ -78,7 +85,7 @@ export const Loading: React.FC<ILoading> = ({type, icon, text, button}) => {
   };
   const containerStyle: StyleProp<ViewStyle> = {
     ...backgroundStyle,
-    height,
+    height: height || wHeight,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

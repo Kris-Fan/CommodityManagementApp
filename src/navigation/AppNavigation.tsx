@@ -6,6 +6,7 @@ import {MyWebView} from '../component/page/WebView';
 import {ScanQRCode} from '../component/home/ScanQRCode';
 import CommodityNavigator from '../component/commodity/Navigation';
 import Detail from '../component/commodity/Detail';
+import CommodityAdd from '../component/commodity/Add';
 // import {HomePage, MePage, LoginPage} from '../component';
 
 // APP的启动页面必须使用createSwitchNavigator，防止按返回按钮回到启动页
@@ -59,7 +60,7 @@ const AppRouter = createStackNavigator({
     screen: MyWebView,
     navigationOptions: {
       headerShown: false,
-      gestureEnabled: true,
+      gestureEnabled: false,
     },
   },
   // 扫码页
@@ -80,6 +81,13 @@ const AppRouter = createStackNavigator({
   },
   CommodityDetail: {
     screen: Detail,
+    navigationOptions: {
+      headerShown: false,
+      gestureEnabled: true,
+    },
+  },
+  CommodityAdd: {
+    screen: CommodityAdd,
     navigationOptions: {
       headerShown: false,
       gestureEnabled: true,

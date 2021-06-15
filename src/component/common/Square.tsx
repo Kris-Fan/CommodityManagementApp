@@ -154,11 +154,11 @@ const RetangleGroupLight: React.FC<{
     | 'space-between'
     | 'space-around'
     | 'space-evenly';
-}> = ({title, color, bgColor, justifyContent, children}) => {
+  marginH?: number;
+}> = ({title, color, bgColor, justifyContent, marginH, children}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const viewStyle: StyleProp<ViewStyle> = {
-    marginLeft: 14,
-    marginRight: 14,
+    marginHorizontal: marginH === undefined ? 14 : marginH || 0,
     padding: 5,
     flexDirection: 'column',
     backgroundColor: isDarkMode ? Colors.dark : bgColor || Colors.white,
